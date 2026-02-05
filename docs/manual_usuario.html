@@ -256,15 +256,49 @@
             text-align: center;
             margin-right: 5px;
         }
+
+        /* Botão de voltar */
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9em;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: background-color 0.2s;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            background-color: #2980b9;
+        }
+
+        .back-button::before {
+            content: '← ';
+        }
+
+        @media print {
+            .back-button {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
+
+<!-- BOTÃO VOLTAR -->
+<a href="/dashboard/" class="back-button">Voltar ao sistema</a>
 
 <!-- CAPA -->
 <div class="cover">
     <h1>Praxis CRM</h1>
     <p class="subtitle">Manual do Usuário</p>
-    <p class="version">Versão 1.0</p>
+    <p class="version">Versão 1.5</p>
     <p class="date">Fevereiro de 2026</p>
 </div>
 
@@ -280,7 +314,9 @@
         <li><strong>6.</strong> Guia do Administrador</li>
         <li><strong>7.</strong> Pipeline de Vendas</li>
         <li><strong>8.</strong> Metas Comerciais</li>
-        <li><strong>9.</strong> Perguntas Frequentes</li>
+        <li><strong>9.</strong> Follow-up e Disciplina Comercial</li>
+        <li><strong>10.</strong> Lembretes e Alertas</li>
+        <li><strong>11.</strong> Perguntas Frequentes</li>
     </ul>
 </div>
 
@@ -379,6 +415,18 @@
         <td>Sim</td>
         <td>Sim</td>
     </tr>
+    <tr>
+        <td>Editar follow-up</td>
+        <td>Sim (suas oportunidades)</td>
+        <td>Não</td>
+        <td>Não</td>
+    </tr>
+    <tr>
+        <td>Ver oportunidades sem follow-up</td>
+        <td>Não</td>
+        <td>Sim</td>
+        <td>Sim</td>
+    </tr>
 </table>
 
 <!-- 3. ACESSO AO SISTEMA -->
@@ -422,6 +470,11 @@
         <td>Interações</td>
         <td>Registro de contatos com clientes</td>
         <td>Todos</td>
+    </tr>
+    <tr>
+        <td>Minhas Pendências</td>
+        <td>Follow-ups atrasados ou para hoje</td>
+        <td>Vendedor</td>
     </tr>
     <tr>
         <td>Minha Meta</td>
@@ -588,6 +641,21 @@ Prospecção → Qualificação → Proposta → Negociação → Fechamento
     <li>Status da meta</li>
 </ul>
 
+<h2>5.5 Oportunidades sem Follow-up</h2>
+
+<p>Acesse pelo menu <strong>Gestão → Oportunidades sem Follow-up</strong>:</p>
+
+<ul>
+    <li>Oportunidades sem data de follow-up definida</li>
+    <li>Oportunidades paradas há muitos dias</li>
+    <li>Vendedor responsável por cada oportunidade</li>
+    <li>Dias sem movimentação</li>
+</ul>
+
+<div class="info-box">
+    <strong>Dica:</strong> Use esta visão para identificar oportunidades que podem estar sendo esquecidas pelo time e oriente os vendedores a manterem a disciplina comercial.
+</div>
+
 <!-- 6. GUIA DO ADMINISTRADOR -->
 <h1>6. Guia do Administrador</h1>
 
@@ -741,8 +809,412 @@ Prospecção → Qualificação → Proposta → Negociação → Fechamento
     <strong>Por que 1,5×?</strong> Nem todas as oportunidades se convertem em venda. Ter um pipeline de pelo menos 1,5× a meta garante uma margem de segurança para atingir o objetivo.
 </div>
 
-<!-- 9. PERGUNTAS FREQUENTES -->
-<h1>9. Perguntas Frequentes</h1>
+<!-- 9. FOLLOW-UP E DISCIPLINA COMERCIAL -->
+<h1>9. Follow-up e Disciplina Comercial</h1>
+
+<p>O follow-up é uma das práticas mais importantes para o sucesso em vendas. No Praxis CRM, o sistema ajuda você a manter a disciplina comercial, garantindo que nenhuma oportunidade fique esquecida.</p>
+
+<div class="info-box">
+    <strong>Princípio:</strong> O sistema lembra, você age. O Praxis não envia mensagens automáticas nem persegue clientes. Ele apenas organiza suas pendências para que você nunca esqueça de dar o próximo passo.
+</div>
+
+<h2>9.1 O que é Follow-up</h2>
+
+<p>Follow-up é o acompanhamento sistemático de cada oportunidade de venda. Significa definir qual será a <strong>próxima ação</strong> e <strong>quando</strong> ela deve acontecer.</p>
+
+<p>Exemplos de próximas ações:</p>
+<ul>
+    <li>Ligar para confirmar recebimento da proposta</li>
+    <li>Enviar e-mail com condições especiais</li>
+    <li>Agendar reunião de fechamento</li>
+    <li>Verificar se o cliente tomou decisão</li>
+    <li>Retornar após período de férias do cliente</li>
+</ul>
+
+<h2>9.2 Campos de Follow-up</h2>
+
+<p>Cada oportunidade possui dois campos para controle de follow-up:</p>
+
+<table>
+    <tr>
+        <th>Campo</th>
+        <th>Descrição</th>
+        <th>Exemplo</th>
+    </tr>
+    <tr>
+        <td><strong>Próxima Ação</strong></td>
+        <td>O que você precisa fazer</td>
+        <td>"Ligar para saber decisão sobre proposta"</td>
+    </tr>
+    <tr>
+        <td><strong>Data do Follow-up</strong></td>
+        <td>Quando você deve agir</td>
+        <td>15/02/2026</td>
+    </tr>
+</table>
+
+<div class="warning-box">
+    <strong>Importante:</strong> Apenas o <span class="badge badge-vendedor">VENDEDOR</span> responsável pela oportunidade pode editar esses campos. Gestores e Admins apenas visualizam.
+</div>
+
+<h2>9.3 Como Definir o Follow-up</h2>
+
+<p>Para definir ou editar o follow-up de uma oportunidade:</p>
+
+<ol>
+    <li>Acesse a oportunidade na lista ou busca</li>
+    <li>Na tela de detalhes, clique em <strong>Editar Follow-up</strong></li>
+    <li>Preencha:
+        <ul>
+            <li><strong>Próxima ação:</strong> Descreva brevemente o que precisa fazer</li>
+            <li><strong>Data do follow-up:</strong> Quando você deve realizar a ação</li>
+        </ul>
+    </li>
+    <li>Clique em <strong>Salvar</strong></li>
+</ol>
+
+<div class="success-box">
+    <strong>Dica:</strong> Sempre que finalizar um contato com o cliente, já defina a próxima ação. Isso mantém a oportunidade sempre em movimento.
+</div>
+
+<h2>9.4 Lista de Pendências do Vendedor</h2>
+
+<p>O vendedor tem acesso a uma lista especial que mostra todas as suas pendências de follow-up:</p>
+
+<ol>
+    <li>Acesse <strong>Minhas Pendências</strong> no menu</li>
+    <li>Visualize todas as oportunidades que precisam de ação</li>
+</ol>
+
+<p>A lista mostra:</p>
+
+<table>
+    <tr>
+        <th>Coluna</th>
+        <th>Descrição</th>
+    </tr>
+    <tr>
+        <td>Cliente</td>
+        <td>Nome do cliente da oportunidade</td>
+    </tr>
+    <tr>
+        <td>Etapa</td>
+        <td>Em qual fase do pipeline está</td>
+    </tr>
+    <tr>
+        <td>Próxima Ação</td>
+        <td>O que você definiu que precisa fazer</td>
+    </tr>
+    <tr>
+        <td>Data Follow-up</td>
+        <td>Quando deveria ter sido feito</td>
+    </tr>
+    <tr>
+        <td>Dias em Atraso</td>
+        <td>Quantos dias passou da data</td>
+    </tr>
+</table>
+
+<div class="info-box">
+    <strong>Ordenação:</strong> A lista mostra primeiro as oportunidades mais atrasadas, para que você priorize o que está pendente há mais tempo.
+</div>
+
+<h2>9.5 Indicadores Visuais de Status</h2>
+
+<p>O sistema usa cores para indicar a situação de cada follow-up:</p>
+
+<table>
+    <tr>
+        <th>Status</th>
+        <th>Condição</th>
+        <th>Significado</th>
+    </tr>
+    <tr>
+        <td><span class="status-ok">Em dia</span></td>
+        <td>Data do follow-up ainda não chegou</td>
+        <td>Tudo sob controle</td>
+    </tr>
+    <tr>
+        <td><span class="status-atencao">Hoje</span></td>
+        <td>Data do follow-up é hoje</td>
+        <td>Hora de agir!</td>
+    </tr>
+    <tr>
+        <td><span class="status-risco">Atrasado</span></td>
+        <td>Data do follow-up já passou</td>
+        <td>Ação urgente necessária</td>
+    </tr>
+</table>
+
+<h2>9.6 Visão do Gestor</h2>
+
+<p>O <span class="badge badge-gestor">GESTOR</span> e o <span class="badge badge-admin">ADMIN</span> têm acesso a uma visão especial para monitorar a disciplina comercial do time:</p>
+
+<ol>
+    <li>Acesse <strong>Gestão → Oportunidades sem Follow-up</strong></li>
+    <li>Visualize oportunidades que precisam de atenção</li>
+</ol>
+
+<p>Esta tela mostra:</p>
+<ul>
+    <li>Oportunidades <strong>sem data de follow-up</strong> definida</li>
+    <li>Oportunidades <strong>paradas há muitos dias</strong> sem movimentação</li>
+</ul>
+
+<p>Informações exibidas:</p>
+
+<table>
+    <tr>
+        <th>Coluna</th>
+        <th>Descrição</th>
+    </tr>
+    <tr>
+        <td>Cliente</td>
+        <td>Nome do cliente</td>
+    </tr>
+    <tr>
+        <td>Vendedor</td>
+        <td>Responsável pela oportunidade</td>
+    </tr>
+    <tr>
+        <td>Etapa</td>
+        <td>Fase atual no pipeline</td>
+    </tr>
+    <tr>
+        <td>Dias sem Movimentação</td>
+        <td>Há quantos dias a oportunidade não é atualizada</td>
+    </tr>
+</table>
+
+<div class="warning-box">
+    <strong>Atenção Gestores:</strong> Esta visão é apenas para monitoramento. O gestor não pode editar o follow-up das oportunidades. Converse com o vendedor responsável quando identificar oportunidades esquecidas.
+</div>
+
+<h2>9.7 Boas Práticas de Follow-up</h2>
+
+<div class="success-box">
+    <strong>Regra de ouro:</strong> Toda oportunidade ativa deve ter uma próxima ação definida com data.
+</div>
+
+<h3>Para o Vendedor</h3>
+
+<ol>
+    <li><strong>Defina a próxima ação imediatamente</strong> — Ao terminar uma ligação ou reunião, já registre qual será o próximo passo</li>
+    <li><strong>Seja específico</strong> — Em vez de "retornar", escreva "ligar para confirmar se recebeu proposta"</li>
+    <li><strong>Use datas realistas</strong> — Não adiante demais para não esquecer, nem coloque para amanhã sem necessidade</li>
+    <li><strong>Consulte suas pendências diariamente</strong> — Comece o dia verificando a lista de pendências</li>
+    <li><strong>Atualize após cada contato</strong> — Não deixe informações desatualizadas no sistema</li>
+</ol>
+
+<h3>Para o Gestor</h3>
+
+<ol>
+    <li><strong>Monitore semanalmente</strong> — Verifique oportunidades sem follow-up pelo menos uma vez por semana</li>
+    <li><strong>Converse, não persiga</strong> — Use as informações para orientar o vendedor, não para cobrança excessiva</li>
+    <li><strong>Identifique padrões</strong> — Se um vendedor sempre esquece follow-ups, pode ser sinal de sobrecarga ou falta de método</li>
+</ol>
+
+<h2>9.8 Permissões de Follow-up</h2>
+
+<table>
+    <tr>
+        <th>Ação</th>
+        <th>Vendedor</th>
+        <th>Gestor</th>
+        <th>Admin</th>
+    </tr>
+    <tr>
+        <td>Definir próxima ação</td>
+        <td>Sim (suas oportunidades)</td>
+        <td>Não</td>
+        <td>Não</td>
+    </tr>
+    <tr>
+        <td>Definir data de follow-up</td>
+        <td>Sim (suas oportunidades)</td>
+        <td>Não</td>
+        <td>Não</td>
+    </tr>
+    <tr>
+        <td>Ver suas pendências</td>
+        <td>Sim</td>
+        <td>—</td>
+        <td>—</td>
+    </tr>
+    <tr>
+        <td>Ver oportunidades sem follow-up</td>
+        <td>Não</td>
+        <td>Sim</td>
+        <td>Sim</td>
+    </tr>
+</table>
+
+<!-- 10. LEMBRETES E ALERTAS -->
+<h1>10. Lembretes e Alertas</h1>
+
+<p>O Praxis CRM possui um sistema de lembretes para ajudar você a manter a disciplina comercial. O sistema <strong>avisa</strong>, mas <strong>você decide</strong> quando e como agir.</p>
+
+<div class="info-box">
+    <strong>Princípio:</strong> O sistema envia lembretes simples e objetivos. Não há spam, não há automações invasivas. Você recebe apenas o necessário para não esquecer suas pendências.
+</div>
+
+<h2>10.1 Lembrete Visual no Dashboard</h2>
+
+<p>Ao acessar o sistema, o <span class="badge badge-vendedor">VENDEDOR</span> verá um aviso no dashboard quando houver oportunidades com follow-up agendado para o dia:</p>
+
+<div class="warning-box">
+    <strong>Lembrete:</strong> Você possui X oportunidades com follow-up para hoje. <em>Ver pendências</em>
+</div>
+
+<p>Este aviso:</p>
+<ul>
+    <li>Aparece apenas quando há follow-ups para o dia atual</li>
+    <li>Mostra a quantidade de oportunidades pendentes</li>
+    <li>Possui um link direto para a lista de pendências</li>
+    <li>Não bloqueia nenhuma ação no sistema</li>
+</ul>
+
+<h2>10.2 E-mail de Lembrete Diário</h2>
+
+<p>O sistema pode enviar <strong>um único e-mail por dia</strong> para vendedores que possuem follow-ups agendados:</p>
+
+<div class="success-box">
+    <strong>Assunto:</strong> Praxis CRM - Lembrete de Follow-up<br><br>
+    Olá [Nome],<br><br>
+    Você possui X oportunidades com follow-up agendado para hoje.<br><br>
+    Acesse o Praxis CRM para visualizar.<br><br>
+    Atenciosamente,<br>
+    Equipe Praxis CRM
+</div>
+
+<h3>Regras do e-mail:</h3>
+
+<table>
+    <tr>
+        <th>Regra</th>
+        <th>Descrição</th>
+    </tr>
+    <tr>
+        <td>Frequência</td>
+        <td>No máximo 1 e-mail por dia</td>
+    </tr>
+    <tr>
+        <td>Condição</td>
+        <td>Apenas se houver follow-up para hoje</td>
+    </tr>
+    <tr>
+        <td>Conteúdo</td>
+        <td>Mensagem curta, sem detalhes comerciais</td>
+    </tr>
+    <tr>
+        <td>Destinatário</td>
+        <td>Apenas o vendedor responsável</td>
+    </tr>
+</table>
+
+<div class="warning-box">
+    <strong>Importante:</strong> Se não houver follow-ups para o dia, você não receberá nenhum e-mail. O sistema não envia mensagens desnecessárias.
+</div>
+
+<h2>10.3 Alerta para o Gestor</h2>
+
+<p>O <span class="badge badge-gestor">GESTOR</span> e o <span class="badge badge-admin">ADMIN</span> veem um alerta no dashboard quando há problemas de disciplina comercial:</p>
+
+<div class="warning-box">
+    <strong>Alerta de Disciplina Comercial:</strong> X oportunidades sem follow-up definido. Y oportunidades paradas há mais de 7 dias. <em>Ver detalhes</em>
+</div>
+
+<p>Este alerta indica:</p>
+<ul>
+    <li>Oportunidades sem data de follow-up definida</li>
+    <li>Oportunidades que não foram atualizadas há muitos dias</li>
+</ul>
+
+<div class="info-box">
+    <strong>Nota:</strong> O gestor não recebe e-mails de lembrete. O alerta é apenas visual, para consulta quando acessar o sistema.
+</div>
+
+<h2>10.4 O que o Sistema NÃO Faz</h2>
+
+<p>É importante saber o que o Praxis CRM <strong>não faz</strong> em relação a lembretes:</p>
+
+<table>
+    <tr>
+        <th>O sistema NÃO...</th>
+        <th>Por quê</th>
+    </tr>
+    <tr>
+        <td>Envia múltiplos e-mails por dia</td>
+        <td>Evitar sobrecarga de mensagens</td>
+    </tr>
+    <tr>
+        <td>Envia WhatsApp ou SMS</td>
+        <td>Manter a comunicação simples e não invasiva</td>
+    </tr>
+    <tr>
+        <td>Altera etapas automaticamente</td>
+        <td>Decisões comerciais são suas</td>
+    </tr>
+    <tr>
+        <td>Move ou arquiva oportunidades</td>
+        <td>Você mantém o controle total</td>
+    </tr>
+    <tr>
+        <td>Envia e-mails para clientes</td>
+        <td>Lembretes são apenas internos</td>
+    </tr>
+</table>
+
+<h2>10.5 Boas Práticas</h2>
+
+<h3>Para o Vendedor</h3>
+
+<ol>
+    <li><strong>Verifique o dashboard diariamente</strong> — O lembrete visual está lá para ajudar</li>
+    <li><strong>Mantenha follow-up sempre preenchido</strong> — Toda oportunidade ativa deve ter uma próxima ação</li>
+    <li><strong>Configure seu e-mail corretamente</strong> — Certifique-se de que seu e-mail no sistema está atualizado</li>
+    <li><strong>Não ignore os lembretes</strong> — Eles existem para ajudar, não para incomodar</li>
+</ol>
+
+<h3>Para o Gestor</h3>
+
+<ol>
+    <li><strong>Monitore o alerta de disciplina</strong> — Use-o para identificar oportunidades esquecidas</li>
+    <li><strong>Oriente a equipe</strong> — Se muitas oportunidades estão sem follow-up, pode ser hora de uma conversa</li>
+    <li><strong>Não use para cobrança excessiva</strong> — O objetivo é ajudar, não pressionar</li>
+</ol>
+
+<h2>10.6 Quem Recebe o Quê</h2>
+
+<table>
+    <tr>
+        <th>Tipo de Lembrete</th>
+        <th>Vendedor</th>
+        <th>Gestor</th>
+        <th>Admin</th>
+    </tr>
+    <tr>
+        <td>Lembrete visual no dashboard</td>
+        <td>Sim</td>
+        <td>Não</td>
+        <td>Não</td>
+    </tr>
+    <tr>
+        <td>E-mail de follow-up</td>
+        <td>Sim</td>
+        <td>Não</td>
+        <td>Não</td>
+    </tr>
+    <tr>
+        <td>Alerta de disciplina comercial</td>
+        <td>Não</td>
+        <td>Sim</td>
+        <td>Sim</td>
+    </tr>
+</table>
+
+<!-- 11. PERGUNTAS FREQUENTES -->
+<h1>11. Perguntas Frequentes</h1>
 
 <h3>Por que não consigo ver os clientes de outros vendedores?</h3>
 <p>Por segurança, cada vendedor vê apenas seus próprios clientes e oportunidades. Gestores e admins podem ver todos os dados.</p>
@@ -762,10 +1234,28 @@ Prospecção → Qualificação → Proposta → Negociação → Fechamento
 <h3>Como sou notificado sobre minha meta?</h3>
 <p>Acesse a tela <strong>Minha Meta</strong> regularmente para acompanhar seu progresso. O status (OK, Atenção, Risco) indica sua situação.</p>
 
+<h3>O que acontece se eu não definir um follow-up?</h3>
+<p>A oportunidade ficará visível na tela "Oportunidades sem Follow-up" do gestor. Isso pode indicar falta de disciplina comercial. Sempre defina a próxima ação para manter suas oportunidades em movimento.</p>
+
+<h3>Por que não consigo editar o follow-up de uma oportunidade?</h3>
+<p>Apenas o vendedor responsável pela oportunidade pode editar o follow-up. Gestores e admins podem apenas visualizar.</p>
+
+<h3>Como vejo minhas pendências de follow-up?</h3>
+<p>Acesse <strong>Minhas Pendências</strong> no menu. A lista mostra todas as oportunidades com follow-up atrasado ou para hoje, ordenadas por prioridade.</p>
+
+<h3>Por que não recebi o e-mail de lembrete?</h3>
+<p>O e-mail só é enviado se você tiver oportunidades com follow-up para o dia atual. Se não houver nenhuma, você não receberá e-mail. Verifique também se seu e-mail está cadastrado corretamente no sistema.</p>
+
+<h3>Posso desativar os lembretes por e-mail?</h3>
+<p>O envio de e-mails é gerenciado pelo administrador do sistema. Converse com ele se precisar ajustar as configurações.</p>
+
+<h3>O sistema envia e-mails para meus clientes?</h3>
+<p>Não. Os lembretes são apenas internos, enviados para você (vendedor). O sistema nunca envia e-mails para clientes.</p>
+
 <hr style="margin: 50px 0; border: none; border-top: 1px solid #ddd;">
 
 <p style="text-align: center; color: #95a5a6;">
-    <strong>Praxis CRM</strong> — Manual do Usuário v1.0<br>
+    <strong>Praxis CRM</strong> — Manual do Usuário v1.5<br>
     Desenvolvido com Django 5.x
 </p>
 

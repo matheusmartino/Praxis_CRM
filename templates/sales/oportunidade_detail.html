@@ -40,6 +40,59 @@
             <dd class="col-sm-9">{{ oportunidade.criado_em|date:"d/m/Y H:i" }}</dd>
         </dl>
     </div>
+</div>
+
+<!-- Card de Follow-up -->
+{% if oportunidade.etapa != "FECHAMENTO" and oportunidade.etapa != "PERDIDA" %}
+<div class="card mt-3">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0"><i class="bi bi-calendar-check"></i> Follow-up</h5>
+        {% if user.perfil.is_vendedor %}
+        <a href="{% url 'sales:followup_edit' oportunidade.pk %}" class="btn btn-sm btn-outline-primary">
+            <i class="bi bi-pencil"></i> Editar
+        </a>
+        {% endif %}
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <strong>Próxima Ação:</strong>
+                <p class="{% if not oportunidade.proxima_acao %}text-muted{% endif %}">
+                    {{ oportunidade.proxima_acao|default:"Não definida" }}
+                </p>
+            </div>
+            <div class="col-md-6">
+                <strong>Data do Follow-up:</strong>
+                {% if oportunidade.data_follow_up %}
+                    {% now "Y-m-d" as hoje %}
+                    {% if oportunidade.data_follow_up|date:"Y-m-d" < hoje %}
+                    <p class="text-danger fw-bold">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        {{ oportunidade.data_follow_up|date:"d/m/Y" }} (Atrasado)
+                    </p>
+                    {% elif oportunidade.data_follow_up|date:"Y-m-d" == hoje %}
+                    <p class="text-warning fw-bold">
+                        <i class="bi bi-clock"></i>
+                        {{ oportunidade.data_follow_up|date:"d/m/Y" }} (Hoje)
+                    </p>
+                    {% else %}
+                    <p class="text-success">
+                        <i class="bi bi-check-circle"></i>
+                        {{ oportunidade.data_follow_up|date:"d/m/Y" }}
+                    </p>
+                    {% endif %}
+                {% else %}
+                <p class="text-muted">Não definida</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Ações -->
+<div class="card mt-3">
+    <div class="card-body">
     {% if oportunidade.etapa != "FECHAMENTO" and oportunidade.etapa != "PERDIDA" %}
     <div class="card-footer d-flex gap-2">
         <form method="post" action="{% url 'sales:oportunidade_avancar' oportunidade.pk %}">
@@ -54,8 +107,10 @@
                 <i class="bi bi-x-circle"></i> Marcar como perdida
             </button>
         </form>
-    </div>
+    {% else %}
+        <span class="text-muted">Esta oportunidade está finalizada.</span>
     {% endif %}
+    </div>
 </div>
 
 <div class="d-flex justify-content-between align-items-center mt-4 mb-2">

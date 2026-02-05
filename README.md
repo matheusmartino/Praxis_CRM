@@ -205,6 +205,107 @@ O sistema permite definir metas mensais para cada vendedor e acompanhar o desemp
 - `/sales/minha-meta/` — Vendedor vê sua meta
 - `/sales/metas/` — Gestor/Admin vê todas as metas
 
+## Follow-up e Disciplina Comercial (Etapa 4)
+
+O sistema de follow-up garante que nenhuma oportunidade fique esquecida.
+
+### Campos de Follow-up
+
+| Campo | Descrição |
+|-------|-----------|
+| proxima_acao | Descrição da próxima ação a realizar (CharField, max 200) |
+| data_follow_up | Data prevista para o próximo contato (DateField, opcional) |
+
+### Status do Follow-up
+
+| Status | Condição |
+|--------|----------|
+| EM_DIA | data_follow_up > hoje |
+| HOJE | data_follow_up == hoje |
+| ATRASADO | data_follow_up < hoje |
+| SEM_DATA | data_follow_up é None |
+
+### Funcionalidades
+
+**Minhas Pendências (Vendedor):**
+- Lista oportunidades do vendedor com follow-up atrasado ou para hoje
+- Ordenado por mais atrasadas primeiro
+- Exibe: cliente, etapa, próxima ação, data follow-up, dias em atraso
+
+**Oportunidades sem Follow-up (Gestor/Admin):**
+- Lista oportunidades sem data de follow-up OU paradas há X dias
+- Parâmetro configurável de dias (default: 7)
+- Exibe: cliente, vendedor, etapa, dias sem movimentação
+
+### Permissões
+
+| Ação | Vendedor | Gestor | Admin |
+|------|----------|--------|-------|
+| Editar follow-up | Sim (suas oportunidades) | Não | Não |
+| Ver pendências próprias | Sim | — | — |
+| Ver oportunidades sem follow-up | Não | Sim | Sim |
+
+### URLs
+
+- `/sales/minhas-pendencias/` — Vendedor vê suas pendências
+- `/sales/oportunidades-sem-followup/` — Gestor/Admin monitora disciplina comercial
+- `/sales/oportunidade/<pk>/followup/` — Editar follow-up de uma oportunidade
+
+## Lembretes e Alertas (Etapa 5)
+
+Sistema de lembretes visuais e e-mail para sustentar a disciplina comercial.
+
+### Lembrete Visual (Vendedor)
+
+No dashboard do vendedor, exibe aviso quando há oportunidades com follow-up para hoje.
+
+### E-mail de Lembrete
+
+- Enviado diariamente via management command
+- Máximo de 1 e-mail por vendedor por dia
+- Apenas quando há follow-up para o dia atual
+- Conteúdo simples, sem detalhes comerciais
+
+### Alerta Visual (Gestor)
+
+No dashboard do gestor, exibe alerta quando há:
+- Oportunidades sem data_follow_up
+- Oportunidades paradas há mais de 7 dias
+
+### Management Command
+
+```bash
+# Enviar lembretes de follow-up
+python manage.py send_followup_reminders
+
+# Modo simulação (sem enviar e-mails)
+python manage.py send_followup_reminders --dry-run
+```
+
+Recomenda-se agendar execução diária via cron ou Task Scheduler.
+
+### Configuração de E-mail
+
+Variáveis de ambiente para configurar o envio:
+
+| Variável | Descrição | Default |
+|----------|-----------|---------|
+| EMAIL_BACKEND | Backend de e-mail | console (dev) |
+| EMAIL_HOST | Servidor SMTP | localhost |
+| EMAIL_PORT | Porta SMTP | 587 |
+| EMAIL_USE_TLS | Usar TLS | True |
+| EMAIL_HOST_USER | Usuário SMTP | — |
+| EMAIL_HOST_PASSWORD | Senha SMTP | — |
+| DEFAULT_FROM_EMAIL | Remetente | Praxis CRM |
+
+### Quem recebe o quê
+
+| Tipo | Vendedor | Gestor | Admin |
+|------|----------|--------|-------|
+| Lembrete visual | Sim | Não | Não |
+| E-mail de follow-up | Sim | Não | Não |
+| Alerta de disciplina | Não | Sim | Sim |
+
 ## Decisões de arquitetura
 
 - **Settings split**: `config/settings/base.py` com configurações comuns, `dev.py` para desenvolvimento (SQLite), `prod.py` para produção (PostgreSQL via variáveis de ambiente)

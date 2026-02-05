@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Praxis CRM - Sistema de gestão comercial com método próprio, focado em disciplina e follow-up para vendas B2B consultivas.">
+    <title>Praxis CRM — Disciplina comercial que vira venda real</title>
+    <style>
+        /* =================================================================
+           RESET E BASE
+           Mantendo consistência com o manual do usuário
+           ================================================================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #fff;
+        }
+
+        /* =================================================================
+           VARIÁVEIS DE COR (baseadas no manual)
+           ================================================================= */
+        :root {
+            --azul-escuro: #2c3e50;
+            --azul-principal: #3498db;
+            --azul-medio: #34495e;
+            --cinza-texto: #7f8c8d;
+            --cinza-claro: #95a5a6;
+            --cinza-fundo: #f8f9fa;
+            --verde: #27ae60;
+            --laranja: #f39c12;
+            --branco: #ffffff;
+            --borda: #ddd;
+        }
+
+        /* =================================================================
+           LAYOUT GERAL
+           ================================================================= */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 80px 0;
+        }
+
+        section:nth-child(even) {
+            background-color: var(--cinza-fundo);
+        }
+
+        /* =================================================================
+           TIPOGRAFIA
+           ================================================================= */
+        h1, h2, h3 {
+            color: var(--azul-escuro);
+            font-weight: 600;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--azul-principal);
+        }
+
+        h3 {
+            font-size: 1.3em;
+            color: var(--azul-medio);
+            margin-bottom: 15px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: var(--azul-medio);
+        }
+
+        .text-muted {
+            color: var(--cinza-texto);
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* =================================================================
+           NAVEGAÇÃO
+           ================================================================= */
+        nav {
+            background-color: var(--branco);
+            border-bottom: 1px solid var(--borda);
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: var(--azul-escuro);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--azul-principal);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--azul-medio);
+            text-decoration: none;
+            font-size: 0.95em;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--azul-principal);
+        }
+
+        /* =================================================================
+           BOTÕES
+           ================================================================= */
+        .btn {
+            display: inline-block;
+            padding: 14px 32px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1em;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--azul-principal);
+            color: var(--branco);
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--azul-principal);
+            border: 2px solid var(--azul-principal);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--azul-principal);
+            color: var(--branco);
+        }
+
+        .btn-outline-light {
+            background-color: transparent;
+            color: var(--azul-escuro);
+            border: 2px solid var(--azul-escuro);
+            padding: 10px 20px;
+        }
+
+        .btn-outline-light:hover {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+        }
+
+        /* =================================================================
+           HERO SECTION
+           ================================================================= */
+        .hero {
+            padding-top: 140px;
+            padding-bottom: 100px;
+            text-align: center;
+            background: linear-gradient(180deg, var(--branco) 0%, var(--cinza-fundo) 100%);
+        }
+
+        .hero h1 {
+            font-size: 2.8em;
+            max-width: 700px;
+            margin: 0 auto 25px;
+            line-height: 1.2;
+        }
+
+        .hero .subtitle {
+            font-size: 1.25em;
+            color: var(--cinza-texto);
+            max-width: 600px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* =================================================================
+           SEÇÃO: O PROBLEMA
+           ================================================================= */
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .problem-card {
+            background: var(--branco);
+            padding: 30px;
+            border-radius: 8px;
+            border-left: 4px solid var(--laranja);
+        }
+
+        .problem-card h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .problem-card p {
+            color: var(--cinza-texto);
+            margin: 0;
+            font-size: 0.95em;
+        }
+
+        /* =================================================================
+           SEÇÃO: COMO FUNCIONA
+           ================================================================= */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background-color: var(--azul-principal);
+            color: var(--branco);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3em;
+            font-weight: 700;
+            margin: 0 auto 20px;
+        }
+
+        .step h3 {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        .step p {
+            font-size: 0.9em;
+            color: var(--cinza-texto);
+        }
+
+        .step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 25px;
+            left: calc(50% + 35px);
+            width: calc(100% - 70px);
+            height: 2px;
+            background-color: var(--borda);
+        }
+
+        /* =================================================================
+           SEÇÃO: DIFERENCIAIS
+           ================================================================= */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background: var(--branco);
+            padding: 30px;
+            border-radius: 8px;
+            border-top: 4px solid var(--azul-principal);
+        }
+
+        .feature-card h3 {
+            font-size: 1.1em;
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            font-size: 0.95em;
+            color: var(--cinza-texto);
+            margin: 0;
+        }
+
+        /* =================================================================
+           SEÇÃO: PRODUTO, NÃO PROJETO
+           ================================================================= */
+        .product-section {
+            background: var(--azul-escuro);
+            color: var(--branco);
+        }
+
+        .product-section h2 {
+            color: var(--branco);
+            border-bottom-color: var(--azul-principal);
+        }
+
+        .product-section p {
+            color: var(--cinza-claro);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .product-item {
+            padding: 25px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            border-left: 4px solid var(--azul-principal);
+        }
+
+        .product-item h3 {
+            color: var(--branco);
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        .product-item p {
+            margin: 0;
+            font-size: 0.95em;
+        }
+
+        /* =================================================================
+           SEÇÃO: PARA QUEM É
+           ================================================================= */
+        .audience-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            margin-top: 40px;
+        }
+
+        .audience-box {
+            padding: 30px;
+            border-radius: 8px;
+        }
+
+        .audience-box.yes {
+            background-color: #e8f8f5;
+            border-left: 4px solid var(--verde);
+        }
+
+        .audience-box.no {
+            background-color: #fef9e7;
+            border-left: 4px solid var(--laranja);
+        }
+
+        .audience-box h3 {
+            margin-bottom: 20px;
+        }
+
+        .audience-box ul {
+            list-style: none;
+            margin: 0;
+        }
+
+        .audience-box li {
+            padding: 8px 0;
+            color: var(--azul-medio);
+            font-size: 0.95em;
+        }
+
+        .audience-box li::before {
+            content: '•';
+            color: var(--cinza-texto);
+            margin-right: 10px;
+        }
+
+        /* =================================================================
+           SEÇÃO: EVOLUÇÃO POR ETAPAS
+           ================================================================= */
+        .roadmap {
+            margin-top: 40px;
+        }
+
+        .roadmap-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid var(--borda);
+        }
+
+        .roadmap-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .roadmap-badge {
+            background-color: var(--azul-principal);
+            color: var(--branco);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            white-space: nowrap;
+            margin-right: 25px;
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .roadmap-badge.future {
+            background-color: var(--cinza-claro);
+        }
+
+        .roadmap-content h3 {
+            font-size: 1.05em;
+            margin-bottom: 5px;
+        }
+
+        .roadmap-content p {
+            margin: 0;
+            font-size: 0.9em;
+        }
+
+        /* =================================================================
+           SEÇÃO: MANUAL COMO DIFERENCIAL
+           ================================================================= */
+        .manual-highlight {
+            background: var(--branco);
+            padding: 40px;
+            border-radius: 8px;
+            border: 1px solid var(--borda);
+            margin-top: 40px;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .manual-icon {
+            width: 100px;
+            height: 100px;
+            background-color: var(--azul-principal);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .manual-icon svg {
+            width: 50px;
+            height: 50px;
+            fill: var(--branco);
+        }
+
+        .manual-text h3 {
+            margin-bottom: 15px;
+        }
+
+        .manual-text ul {
+            list-style: none;
+            margin: 0;
+        }
+
+        .manual-text li {
+            padding: 5px 0;
+            color: var(--cinza-texto);
+            font-size: 0.95em;
+        }
+
+        .manual-text li::before {
+            content: '✓';
+            color: var(--verde);
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        /* =================================================================
+           SEÇÃO: CTA FINAL
+           ================================================================= */
+        .cta-section {
+            text-align: center;
+            background: linear-gradient(180deg, var(--cinza-fundo) 0%, var(--branco) 100%);
+        }
+
+        .cta-section h2 {
+            border: none;
+            font-size: 2em;
+            max-width: 600px;
+            margin: 0 auto 15px;
+        }
+
+        .cta-section p {
+            font-size: 1.1em;
+            margin-bottom: 35px;
+        }
+
+        /* =================================================================
+           RODAPÉ
+           ================================================================= */
+        footer {
+            background-color: var(--azul-escuro);
+            color: var(--cinza-claro);
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        footer p {
+            color: var(--cinza-claro);
+            font-size: 0.9em;
+            margin: 0;
+        }
+
+        footer a {
+            color: var(--azul-principal);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* =================================================================
+           RESPONSIVO
+           ================================================================= */
+        @media (max-width: 900px) {
+            .steps {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .step:not(:last-child)::after {
+                display: none;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .problem-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+
+            .hero h1 {
+                font-size: 2.2em;
+            }
+
+            .hero .subtitle {
+                font-size: 1.1em;
+            }
+
+            section {
+                padding: 60px 0;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .nav-mobile {
+                display: block;
+            }
+
+            .audience-container {
+                grid-template-columns: 1fr;
+            }
+
+            .manual-highlight {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Botão mobile de login visível sempre */
+        .nav-mobile {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .nav-mobile {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- =================================================================
+         NAVEGAÇÃO
+         Inclui botão de login para acesso ao sistema
+         ================================================================= -->
+    <nav>
+        <div class="container">
+            <a href="/" class="logo">Praxis<span>CRM</span></a>
+            <ul class="nav-links">
+                <li><a href="#como-funciona">Como funciona</a></li>
+                <li><a href="#diferenciais">Diferenciais</a></li>
+                <li><a href="#para-quem">Para quem é</a></li>
+                <li><a href="#contato">Contato</a></li>
+                <li><a href="/accounts/login/" class="btn btn-outline-light">Entrar</a></li>
+            </ul>
+            <!-- Botão mobile -->
+            <a href="/accounts/login/" class="btn btn-outline-light nav-mobile">Entrar</a>
+        </div>
+    </nav>
+
+    <!-- =================================================================
+         HERO SECTION
+         Mensagem principal e proposta de valor
+         ================================================================= -->
+    <section class="hero">
+        <div class="container">
+            <h1>Disciplina comercial que vira venda real.</h1>
+            <p class="subtitle">
+                O Praxis CRM foi projetado com um método estruturado para organizar
+                oportunidades, follow-ups e metas. Nenhuma venda morre por esquecimento.
+            </p>
+            <div class="hero-buttons">
+                <a href="#contato" class="btn btn-primary">Solicitar demonstração</a>
+                <a href="/accounts/login/" class="btn btn-secondary">Acessar o sistema</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- =================================================================
+         SEÇÃO: O PROBLEMA
+         Contexto que justifica a existência do produto
+         ================================================================= -->
+    <section id="problema">
+        <div class="container">
+            <h2 class="text-center">O problema que resolvemos</h2>
+            <p class="text-center text-muted" style="max-width: 700px; margin: 0 auto;">
+                Muitas empresas B2B perdem vendas não por falta de oportunidades,
+                mas por falta de acompanhamento sistemático.
+            </p>
+
+            <div class="problem-grid">
+                <div class="problem-card">
+                    <h3>Vendas esquecidas no meio do caminho</h3>
+                    <p>Oportunidades promissoras morrem por falta de follow-up. O vendedor esquece, o cliente esfria, a venda não acontece.</p>
+                </div>
+                <div class="problem-card">
+                    <h3>Pipeline irreal e desatualizado</h3>
+                    <p>Oportunidades antigas inflam o pipeline. O gestor não sabe o que é real e o que já deveria ter sido descartado.</p>
+                </div>
+                <div class="problem-card">
+                    <h3>Excesso de planilhas e controles paralelos</h3>
+                    <p>Cada vendedor tem seu próprio método. Informações ficam dispersas e a gestão perde visibilidade.</p>
+                </div>
+                <div class="problem-card">
+                    <h3>CRMs genéricos demais</h3>
+                    <p>Sistemas complexos ou focados em marketing, não em vendas consultivas. A equipe abandona o uso por excesso de funcionalidades.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =================================================================
+         SEÇÃO: COMO FUNCIONA
+         Explicação simplificada do fluxo de uso (método definido)
+         ================================================================= -->
+    <section id="como-funciona">
+        <div class="container">
+            <h2 class="text-center">Como o Praxis funciona</h2>
+            <p class="text-center text-muted" style="max-width: 600px; margin: 0 auto;">
+                Um método definido em quatro etapas. Processo claro, execução consistente.
+            </p>
+
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Registre a oportunidade</h3>
+                    <p>Cadastre o cliente e a oportunidade seguindo o padrão definido pelo sistema.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Defina a próxima ação</h3>
+                    <p>O sistema exige que você defina o próximo passo e quando ele deve acontecer.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Sistema acompanha e lembra</h3>
+                    <p>Receba lembretes de follow-up. Nenhuma oportunidade fica esquecida.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Gestor enxerga e decide</h3>
+                    <p>Visão padronizada do pipeline, metas e disciplina comercial do time.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =================================================================
+         SEÇÃO: PRODUTO, NÃO PROJETO
+         Posicionamento explícito como produto fechado
+         ================================================================= -->
+    <section id="produto" class="product-section">
+        <div class="container">
+            <h2 class="text-center">Produto, não projeto</h2>
+            <p class="text-center" style="max-width: 700px; margin: 0 auto 20px;">
+                O Praxis CRM não é software sob medida. É um produto com método próprio,
+                pensado para operações comerciais que valorizam disciplina, processo e previsibilidade.
+            </p>
+
+            <div class="product-grid">
+                <div class="product-item">
+                    <h3>Método faz parte do produto</h3>
+                    <p>O Praxis incorpora um processo comercial estruturado. Você não precisa criar o seu do zero.</p>
+                </div>
+                <div class="product-item">
+                    <h3>Sem customizações por cliente</h3>
+                    <p>Todos usam o mesmo sistema, com as mesmas regras. Isso garante consistência e evolução contínua.</p>
+                </div>
+                <div class="product-item">
+                    <h3>Evolução planejada</h3>
+                    <p>Novas funcionalidades são desenvolvidas em etapas definidas e entregues para todos os usuários.</p>
+                </div>
+                <div class="product-item">
+                    <h3>Estabilidade garantida</h3>
+                    <p>Sem ramificações de código por cliente. Uma base única, testada e documentada.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =================================================================
+         SEÇÃO: DIFERENCIAIS
+         O que torna o Praxis CRM diferente
+         ================================================================= -->
+    <section id="diferenciais">
+        <div class="container">
+            <h2 class="text-center">Diferenciais</h2>
+            <p class="text-center text-muted" style="max-width: 600px; margin: 0 auto;">
+                Construído para quem valoriza processo e disciplina.
+            </p>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>Foco em follow-up</h3>
+                    <p>Cada oportunidade exige próxima ação e data. O sistema lembra, você executa.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Regras no backend</h3>
+                    <p>Validações e fluxos garantidos pelo sistema. Menos erro humano, mais consistência.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Visão clara por perfil</h3>
+                    <p>Vendedor, gestor e admin veem exatamente o que precisam. Sem ruído, sem distração.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Metas e disciplina</h3>
+                    <p>Acompanhe metas mensais, pipeline e cobertura. Saiba quem está no caminho certo.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Método documentado</h3>
+                    <p>Manual completo com guias por perfil e boas práticas. O processo é parte do produto.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Integração com ERP</h3>
+                    <p>Preparado para integrar com Bling, conectando vendas ao faturamento.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =================================================================
+         SEÇÃO: PARA QUEM É
+         Definição clara de público-alvo
+         ================================================================= -->
+    <section id="para-quem">
+        <div class="container">
+            <h2 class="text-center">Para quem é o Praxis CRM</h2>
+            <p class="text-center text-muted" style="max-width: 600px; margin: 0 auto;">
+                O Praxis foi feito para um perfil específico de operação.
+                Não tentamos servir a todos.
+            </p>
+
+            <div class="audience-container">
+                <div class="audience-box yes">
+                    <h3>O Praxis é para você se:</h3>
+                    <ul>
+                        <li>Sua empresa faz vendas B2B consultivas</li>
+                        <li>O ciclo de venda dura dias, semanas ou meses</li>
+                        <li>Você tem um time comercial de 2 a 30 pessoas</li>
+                        <li>Acredita que disciplina gera resultado</li>
+                        <li>Aceita seguir um processo definido</li>
+                        <li>Valoriza simplicidade e clareza</li>
+                    </ul>
+                </div>
+                <div class="audience-box no">
+                    <h3>O Praxis não é para você se:</h3>
+                    <ul>
+                        <li>Precisa de automação de marketing</li>
+                        <li>Busca um sistema altamente customizável</li>
+                        <li>Sua operação é varejo ou e-commerce B2C</li>
+                        <li>Quer definir seu próprio processo no sistema</li>
+                        <li>Prefere sistemas que façam tudo automaticamente</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =================================================================
+         SEÇÃO: EVOLUÇÃO POR ETAPAS
+         Roadmap do produto (mostra crescimento planejado, não customização)
+         ================================================================= -->
+    <section id="evolucao">
+        <div class="container">
+            <h2 class="text-center">Evolução por etapas</h2>
+            <p class="text-center text-muted" style="max-width: 600px; margin: 0 auto;">
+                O Praxis CRM é desenvolvido em etapas planejadas.
+                Cada funcionalidade é entregue, validada e documentada para todos os usuários.
+            </p>
+
+            <div class="roadmap">
+                <div class="roadmap-item">
+                    <span class="roadmap-badge">Etapa 1</span>
+                    <div class="roadmap-content">
+                        <h3>Operação Comercial</h3>
+                        <p>Gestão de clientes, oportunidades, interações e pipeline de vendas.</p>
+                    </div>
+                </div>
+                <div class="roadmap-item">
+                    <span class="roadmap-badge">Etapa 2</span>
+                    <div class="roadmap-content">
+                        <h3>Visão do Gestor</h3>
+                        <p>Dashboards, relatórios e análise de performance do time.</p>
+                    </div>
+                </div>
+                <div class="roadmap-item">
+                    <span class="roadmap-badge">Etapa 3</span>
+                    <div class="roadmap-content">
+                        <h3>Metas Comerciais</h3>
+                        <p>Definição de metas mensais, acompanhamento de realizado e pipeline.</p>
+                    </div>
+                </div>
+                <div class="roadmap-item">
+                    <span class="roadmap-badge">Etapa 4</span>
+                    <div class="roadmap-content">
+                        <h3>Follow-up e Disciplina</h3>
+                        <p>Controle de próximas ações, pendências e alertas de oportunidades paradas.</p>
+                    </div>
+                </div>
+                <div class="roadmap-item">
+                    <span class="roadmap-badge">Etapa 5</span>
+                    <div class="roadmap-content">
+                        <h3>Lembretes e Alertas</h3>
+                        <p>Notificações visuais e e-mail de lembrete para vendedores.</p>
+                    </div>
+                </div>
+                <div class="roadmap-item">
+                    <span class="roadmap-badge future">Em breve</span>
+                    <div class="roadmap-content">
+                        <h3>Integração com ERP</h3>
+                        <p>Conexão com Bling para sincronizar vendas e faturamento.</p>
+                    </div>
+                </div>
+                <div class="roadmap-item">
+                    <span class="roadmap-badge future">Futuro</span>
+                    <div class="roadmap-content">
+                        <h3>Insights e Análises</h3>
+                        <p>Relatórios avançados, previsibilidade e inteligência comercial.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =================================================================
+         SEÇÃO: MANUAL COMO DIFERENCIAL
+         Destaque para a documentação do produto
+         ================================================================= -->
+    <section id="manual">
+        <div class="container">
+            <h2 class="text-center">Método documentado</h2>
+            <p class="text-center text-muted" style="max-width: 600px; margin: 0 auto;">
+                O Praxis CRM não é apenas um sistema. É um método completo, com documentação que faz parte do produto.
+            </p>
+
+            <div class="manual-highlight">
+                <div class="manual-icon">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 2H6c-1.206 0-3 .799-3 3v14c0 2.201 1.794 3 3 3h15v-2H6.012C5.55 19.988 5 19.806 5 19s.55-.988 1.012-1H21V4c0-1.103-.897-2-2-2zm0 14H5V5c0-.806.55-.988 1-1h13v12z"/>
+                        <path d="M7 6h10v2H7zm0 4h10v2H7z"/>
+                    </svg>
+                </div>
+                <div class="manual-text">
+                    <h3>Manual de utilização completo</h3>
+                    <ul>
+                        <li>Documentação por etapa, atualizada a cada versão</li>
+                        <li>Guias específicos para vendedor, gestor e administrador</li>
+                        <li>Processo comercial definido e explicado</li>
+                        <li>Boas práticas de uso e disciplina comercial</li>
+                        <li>Perguntas frequentes respondidas</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =================================================================
+         SEÇÃO: CTA FINAL
+         Chamada para ação
+         ================================================================= -->
+    <section id="contato" class="cta-section">
+        <div class="container">
+            <h2>Quer conhecer o Praxis CRM?</h2>
+            <p class="text-muted">
+                Entre em contato para agendar uma demonstração.
+                Mostramos o sistema como ele é, sem promessas de customização.
+            </p>
+            <a href="mailto:contato@praxiscrm.com.br" class="btn btn-primary">Entrar em contato</a>
+        </div>
+    </section>
+
+    <!-- =================================================================
+         RODAPÉ
+         ================================================================= -->
+    <footer>
+        <div class="container">
+            <p>
+                <strong>Praxis CRM</strong> — Disciplina comercial que vira venda real.<br>
+                <small style="margin-top: 10px; display: block;">
+                    <a href="/accounts/login/">Acessar o sistema</a>
+                </small>
+            </p>
+        </div>
+    </footer>
+
+</body>
+</html>

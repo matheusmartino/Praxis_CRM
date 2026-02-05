@@ -3,6 +3,7 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 from django.http import FileResponse, Http404
 from django.shortcuts import render
+from django.utils import timezone
 
 from apps.accounts.forms import LoginForm
 from apps.crm.models import Cliente
@@ -25,10 +26,16 @@ def home_view(request):
     oportunidades_abertas = Oportunidade.objects.filter(vendedor=user).exclude(
         etapa__in=["FECHAMENTO", "PERDIDA"]
     )
+
+    # Lembrete visual: oportunidades com follow-up para hoje
+    hoje = timezone.now().date()
+    followups_hoje = oportunidades_abertas.filter(data_follow_up=hoje).count()
+
     context = {
         "clientes_recentes": clientes_recentes,
         "oportunidades_abertas": oportunidades_abertas,
         "total_oportunidades": oportunidades_abertas.count(),
+        "followups_hoje": followups_hoje,
     }
     return render(request, "home.html", context)
 
@@ -40,3 +47,8 @@ def manual_view(request):
     if not manual_path.exists():
         raise Http404("Manual não encontrado.")
     return FileResponse(open(manual_path, "rb"), content_type="text/html")
+
+
+def landing_view(request):
+    """Landing page institucional do Praxis CRM."""
+    return render(request, "landing.html")

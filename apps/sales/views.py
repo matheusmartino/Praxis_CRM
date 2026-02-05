@@ -5,12 +5,16 @@ from django.views import View
 from django.views.generic import CreateView, DetailView, ListView, TemplateView
 
 from apps.core.mixins import GestorRequiredMixin, VendedorRequiredMixin, VendedorWriteMixin
-from apps.sales.forms import InteracaoForm, OportunidadeForm
 from apps.sales.models import Interacao, MetaComercial, Oportunidade
+from apps.sales.forms import FollowUpForm, InteracaoForm, OportunidadeForm
 from apps.sales.services import (
+    atualizar_follow_up,
     avancar_etapa,
+    calcular_status_follow_up,
     criar_oportunidade,
     listar_metas_vendedores,
+    listar_oportunidades_sem_follow_up,
+    listar_pendencias_vendedor,
     marcar_perdida,
     obter_meta_vendedor,
     registrar_interacao,
@@ -203,3 +207,103 @@ class MetasPorVendedorView(GestorRequiredMixin, TemplateView):
         context["ano_atual"] = timezone.now().year
 
         return context
+
+
+# =============================================================================
+# FOLLOW-UP E DISCIPLINA COMERCIAL
+# =============================================================================
+
+
+class MinhasPendenciasView(VendedorRequiredMixin, TemplateView):
+    """
+    View para o vendedor visualizar suas pendências de follow-up.
+    Exibe oportunidades com follow-up atrasado ou para hoje.
+    """
+
+    template_name = "sales/minhas_pendencias.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Apenas VENDEDOR vê suas pendências
+        if hasattr(self.request.user, "perfil") and self.request.user.perfil.is_vendedor:
+            pendencias = listar_pendencias_vendedor(vendedor=self.request.user)
+        else:
+            pendencias = []
+
+        context["pendencias"] = pendencias
+        context["total_pendencias"] = len(pendencias)
+
+        return context
+
+
+class OportunidadesSemFollowUpView(GestorRequiredMixin, TemplateView):
+    """
+    View para gestor/admin visualizar oportunidades sem follow-up.
+    Exibe oportunidades sem data de follow-up ou paradas há muitos dias.
+    """
+
+    template_name = "sales/oportunidades_sem_followup.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Obtém parâmetro de dias da query string (default: 7)
+        dias = self.request.GET.get("dias", 7)
+        try:
+            dias = int(dias)
+        except ValueError:
+            dias = 7
+
+        oportunidades = listar_oportunidades_sem_follow_up(dias_parada=dias)
+
+        context["oportunidades"] = oportunidades
+        context["total"] = len(oportunidades)
+        context["dias_filtro"] = dias
+
+        return context
+
+
+class FollowUpEditView(VendedorWriteMixin, View):
+    """View para editar o follow-up de uma oportunidade."""
+
+    redirect_url_name = "sales:oportunidade_list"
+
+    def get(self, request, pk):
+        oportunidade = get_object_or_404(Oportunidade, pk=pk)
+
+        # Verifica se é o dono da oportunidade (para VENDEDOR)
+        if hasattr(request.user, "perfil") and request.user.perfil.is_vendedor:
+            if oportunidade.vendedor != request.user:
+                from django.core.exceptions import PermissionDenied
+                raise PermissionDenied
+
+        form = FollowUpForm(instance=oportunidade)
+        return self._render(request, oportunidade, form)
+
+    def post(self, request, pk):
+        oportunidade = get_object_or_404(Oportunidade, pk=pk)
+
+        # Verifica se é o dono da oportunidade (para VENDEDOR)
+        if hasattr(request.user, "perfil") and request.user.perfil.is_vendedor:
+            if oportunidade.vendedor != request.user:
+                from django.core.exceptions import PermissionDenied
+                raise PermissionDenied
+
+        form = FollowUpForm(request.POST, instance=oportunidade)
+        if form.is_valid():
+            atualizar_follow_up(
+                oportunidade=oportunidade,
+                proxima_acao=form.cleaned_data["proxima_acao"],
+                data_follow_up=form.cleaned_data["data_follow_up"],
+            )
+            return redirect("sales:oportunidade_detail", pk=pk)
+
+        return self._render(request, oportunidade, form)
+
+    def _render(self, request, oportunidade, form):
+        from django.shortcuts import render
+        return render(request, "sales/followup_form.html", {
+            "oportunidade": oportunidade,
+            "form": form,
+        })

@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}Leads por Vendedor - Praxis CRM{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-people"></i> Leads por Vendedor</h2>
+    <a href="{% url 'gestao:dashboard' %}" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i> Voltar
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        {% if vendedores %}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Vendedor</th>
+                        <th class="text-center">Leads Criados</th>
+                        <th class="text-center">Total Clientes</th>
+                        <th class="text-center">Oportunidades Criadas</th>
+                        <th class="text-center">Oportunidades (dos Leads)</th>
+                        <th class="text-center">Conversão</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in vendedores %}
+                    <tr>
+                        <td>
+                            <strong>{{ item.vendedor.get_full_name|default:item.vendedor.username }}</strong>
+                            <br>
+                            <small class="text-muted">{{ item.vendedor.email }}</small>
+                        </td>
+                        <td class="text-center">
+                            <span class="badge bg-info fs-6">{{ item.leads_criados }}</span>
+                        </td>
+                        <td class="text-center">{{ item.total_clientes }}</td>
+                        <td class="text-center">{{ item.oportunidades_criadas }}</td>
+                        <td class="text-center">{{ item.oportunidades_leads }}</td>
+                        <td class="text-center">
+                            {% if item.conversao >= 50 %}
+                            <span class="badge bg-success fs-6">{{ item.conversao }}%</span>
+                            {% elif item.conversao >= 25 %}
+                            <span class="badge bg-warning text-dark fs-6">{{ item.conversao }}%</span>
+                            {% else %}
+                            <span class="badge bg-secondary fs-6">{{ item.conversao }}%</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info mb-0">
+            <i class="bi bi-info-circle"></i> Nenhum vendedor com clientes cadastrados.
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="card mt-4">
+    <div class="card-header">
+        <h5 class="mb-0"><i class="bi bi-lightbulb"></i> Legenda</h5>
+    </div>
+    <div class="card-body">
+        <ul class="list-unstyled mb-0">
+            <li><strong>Leads Criados:</strong> Clientes com status Provisório criados pelo vendedor</li>
+            <li><strong>Total Clientes:</strong> Total de clientes criados pelo vendedor (todos os status)</li>
+            <li><strong>Oportunidades Criadas:</strong> Oportunidades onde o vendedor é responsável</li>
+            <li><strong>Oportunidades (dos Leads):</strong> Oportunidades criadas a partir de clientes desse vendedor</li>
+            <li><strong>Conversão:</strong> Percentual de clientes que geraram oportunidades</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

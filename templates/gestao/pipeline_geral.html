@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block title %}Pipeline Geral - Praxis CRM{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-funnel"></i> Pipeline Geral</h2>
+    <a href="{% url 'gestao:dashboard' %}" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i> Voltar
+    </a>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h5 class="mb-0"><i class="bi bi-bar-chart"></i> Pipeline por Etapa</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Etapa</th>
+                        <th class="text-center">Quantidade</th>
+                        <th class="text-end">Valor Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for etapa in etapas %}
+                    <tr>
+                        <td>
+                            {% if etapa.etapa_code == 'FECHAMENTO' %}
+                            <span class="badge bg-success">{{ etapa.etapa }}</span>
+                            {% elif etapa.etapa_code == 'PERDIDA' %}
+                            <span class="badge bg-danger">{{ etapa.etapa }}</span>
+                            {% else %}
+                            <span class="badge bg-primary">{{ etapa.etapa }}</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">{{ etapa.quantidade }}</td>
+                        <td class="text-end">R$ {{ etapa.valor_total|floatformat:2 }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0"><i class="bi bi-person-badge"></i> Pipeline por Vendedor</h5>
+    </div>
+    <div class="card-body">
+        {% if vendedores_pipeline %}
+        {% for vendedor in vendedores_pipeline %}
+        <div class="card mb-3 {% if forloop.last %}mb-0{% endif %}">
+            <div class="card-header bg-light">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>{{ vendedor.vendedor.get_full_name|default:vendedor.vendedor.username }}</strong>
+                        <small class="text-muted ms-2">{{ vendedor.vendedor.email }}</small>
+                    </div>
+                    <div>
+                        <span class="badge bg-primary">{{ vendedor.quantidade }} oportunidades</span>
+                        <span class="badge bg-success">R$ {{ vendedor.valor_total|floatformat:2 }}</span>
+                    </div>
+                </div>
+            </div>
+            {% if vendedor.etapas %}
+            <div class="card-body">
+                <div class="row">
+                    {% for etapa in vendedor.etapas %}
+                    <div class="col-md-2 col-sm-4 mb-2">
+                        <div class="border rounded p-2 text-center">
+                            <small class="text-muted d-block">{{ etapa.etapa }}</small>
+                            <strong>{{ etapa.quantidade }}</strong>
+                            <br>
+                            <small class="text-success">R$ {{ etapa.valor|floatformat:0 }}</small>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="alert alert-info mb-0">
+            <i class="bi bi-info-circle"></i> Nenhuma oportunidade em andamento.
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

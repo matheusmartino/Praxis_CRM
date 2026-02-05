@@ -2,7 +2,7 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView
 
-from apps.core.mixins import VendedorRequiredMixin
+from apps.core.mixins import VendedorRequiredMixin, VendedorWriteMixin
 from apps.crm.forms import ClienteForm
 from apps.crm.models import Cliente
 from apps.crm.services import criar_cliente
@@ -21,11 +21,12 @@ class ClienteListView(VendedorRequiredMixin, ListView):
         return qs
 
 
-class ClienteCreateView(VendedorRequiredMixin, CreateView):
+class ClienteCreateView(VendedorWriteMixin, CreateView):
     model = Cliente
     form_class = ClienteForm
     template_name = "crm/cliente_form.html"
     success_url = reverse_lazy("crm:cliente_list")
+    redirect_url_name = "crm:cliente_list"  # Redirecionamento para GESTOR
 
     def form_valid(self, form):
         criar_cliente(

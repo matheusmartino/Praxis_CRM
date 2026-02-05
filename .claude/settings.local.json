@@ -9,7 +9,10 @@
       "Bash(python manage.py migrate:*)",
       "Bash(python manage.py check:*)",
       "Bash(python -c \"import django; import os; os.environ.setdefault\\(''DJANGO_SETTINGS_MODULE'', ''config.settings.dev''\\); django.setup\\(\\); from django.contrib.admin.sites import site; print\\([f''{m._meta.app_label}.{m.__name__}'' for m in site._registry]\\)\")",
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Bash(set DJANGO_SETTINGS_MODULE=config.settings.dev)",
+      "Bash(where:*)",
+      "Bash(start \"\" \"C:\\\\Users\\\\matheus.martino\\\\source\\\\repos_personal\\\\Praxis_CRM\\\\docs\\\\manual_usuario.html\")"
     ]
   }
 }

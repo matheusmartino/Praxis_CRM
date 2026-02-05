@@ -31,4 +31,5 @@ class EtapaOportunidade(models.TextChoices):
 
 class PerfilUsuario(models.TextChoices):
     VENDEDOR = "VENDEDOR", "Vendedor"
+    GESTOR = "GESTOR", "Gestor Comercial"
     ADMIN = "ADMIN", "Administrador"

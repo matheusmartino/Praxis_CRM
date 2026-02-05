@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+
+{% block title %}Minha Meta - Praxis CRM{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-bullseye"></i> Minha Meta</h2>
+</div>
+
+<!-- Filtro de período -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-3 align-items-end">
+            <div class="col-md-4">
+                <label class="form-label">Mês</label>
+                <select name="mes" class="form-select">
+                    {% for valor, nome in meses %}
+                    <option value="{{ valor }}" {% if valor == mes %}selected{% endif %}>{{ nome }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Ano</label>
+                <select name="ano" class="form-select">
+                    {% for a in "01234"|make_list %}
+                    {% with ano_opcao=ano_atual|add:a|add:"-2" %}
+                    <option value="{{ ano_opcao }}" {% if ano_opcao == ano %}selected{% endif %}>{{ ano_opcao }}</option>
+                    {% endwith %}
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-search"></i> Filtrar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% if meta %}
+<!-- Cards de resumo -->
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-title mb-0">Meta</h6>
+                        <h3 class="mt-2 mb-0">R$ {{ valor_meta|floatformat:2 }}</h3>
+                    </div>
+                    <i class="bi bi-bullseye fs-1 opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-success text-white h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-title mb-0">Realizado</h6>
+                        <h3 class="mt-2 mb-0">R$ {{ realizado|floatformat:2 }}</h3>
+                    </div>
+                    <i class="bi bi-trophy-fill fs-1 opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-info text-white h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-title mb-0">Pipeline</h6>
+                        <h3 class="mt-2 mb-0">R$ {{ pipeline|floatformat:2 }}</h3>
+                    </div>
+                    <i class="bi bi-funnel-fill fs-1 opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card {% if status == 'OK' %}bg-success{% elif status == 'ATENCAO' %}bg-warning{% else %}bg-danger{% endif %} text-white h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-title mb-0">Status</h6>
+                        <h3 class="mt-2 mb-0">
+                            {% if status == 'OK' %}
+                            <i class="bi bi-check-circle"></i> OK
+                            {% elif status == 'ATENCAO' %}
+                            <i class="bi bi-exclamation-triangle"></i> Atenção
+                            {% else %}
+                            <i class="bi bi-x-circle"></i> Risco
+                            {% endif %}
+                        </h3>
+                    </div>
+                    <i class="bi bi-speedometer2 fs-1 opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Barra de progresso -->
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0"><i class="bi bi-graph-up"></i> Atingimento da Meta</h5>
+    </div>
+    <div class="card-body">
+        <div class="mb-3">
+            <div class="d-flex justify-content-between mb-1">
+                <span>Progresso</span>
+                <span><strong>{{ percentual }}%</strong></span>
+            </div>
+            <div class="progress" style="height: 25px;">
+                <div class="progress-bar {% if percentual >= 100 %}bg-success{% elif percentual >= 75 %}bg-info{% elif percentual >= 50 %}bg-warning{% else %}bg-danger{% endif %}"
+                     role="progressbar"
+                     style="width: {% if percentual > 100 %}100{% else %}{{ percentual }}{% endif %}%;"
+                     aria-valuenow="{{ percentual }}"
+                     aria-valuemin="0"
+                     aria-valuemax="100">
+                    {{ percentual }}%
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <p class="mb-1"><strong>Falta para a meta:</strong></p>
+                {% if realizado >= valor_meta %}
+                <p class="text-success fs-5"><i class="bi bi-check-circle"></i> Meta atingida!</p>
+                {% else %}
+                <p class="text-muted fs-5">R$ {{ valor_meta|add:realizado|floatformat:2 }}</p>
+                {% endif %}
+            </div>
+            <div class="col-md-6">
+                <p class="mb-1"><strong>Cobertura do pipeline:</strong></p>
+                {% if valor_meta > 0 %}
+                {% widthratio pipeline valor_meta 100 as cobertura %}
+                <p class="fs-5">{{ cobertura }}% da meta</p>
+                {% else %}
+                <p class="text-muted fs-5">-</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Legenda -->
+<div class="card mt-4">
+    <div class="card-header">
+        <h5 class="mb-0"><i class="bi bi-info-circle"></i> Legenda de Status</h5>
+    </div>
+    <div class="card-body">
+        <ul class="list-unstyled mb-0">
+            <li><span class="badge bg-success">OK</span> Pipeline >= 1,5x a meta (boa cobertura)</li>
+            <li class="mt-2"><span class="badge bg-warning text-dark">Atenção</span> Pipeline >= meta (cobertura mínima)</li>
+            <li class="mt-2"><span class="badge bg-danger">Risco</span> Pipeline < meta (necessita ação)</li>
+        </ul>
+    </div>
+</div>
+
+{% else %}
+<div class="alert alert-info">
+    <i class="bi bi-info-circle"></i> Você não possui meta definida para este período.
+</div>
+{% endif %}
+{% endblock %}

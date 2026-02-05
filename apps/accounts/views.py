@@ -1,5 +1,7 @@
+from django.conf import settings
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
+from django.http import FileResponse, Http404
 from django.shortcuts import render
 
 from apps.accounts.forms import LoginForm
@@ -29,3 +31,12 @@ def home_view(request):
         "total_oportunidades": oportunidades_abertas.count(),
     }
     return render(request, "home.html", context)
+
+
+@login_required
+def manual_view(request):
+    """Exibe o manual do usuário."""
+    manual_path = settings.BASE_DIR / "docs" / "manual_usuario.html"
+    if not manual_path.exists():
+        raise Http404("Manual não encontrado.")
+    return FileResponse(open(manual_path, "rb"), content_type="text/html")

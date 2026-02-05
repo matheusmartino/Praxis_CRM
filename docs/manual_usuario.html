@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual do Usuário - Praxis CRM</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Capa */
+        .cover {
+            text-align: center;
+            padding: 100px 20px;
+            page-break-after: always;
+        }
+
+        .cover h1 {
+            font-size: 3em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .cover .subtitle {
+            font-size: 1.5em;
+            color: #7f8c8d;
+            margin-bottom: 60px;
+        }
+
+        .cover .version {
+            font-size: 1.2em;
+            color: #95a5a6;
+        }
+
+        .cover .date {
+            margin-top: 100px;
+            color: #bdc3c7;
+        }
+
+        /* Títulos */
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin: 40px 0 20px 0;
+            page-break-after: avoid;
+        }
+
+        h2 {
+            color: #34495e;
+            margin: 30px 0 15px 0;
+            padding-left: 10px;
+            border-left: 4px solid #3498db;
+            page-break-after: avoid;
+        }
+
+        h3 {
+            color: #7f8c8d;
+            margin: 20px 0 10px 0;
+            page-break-after: avoid;
+        }
+
+        /* Parágrafos e listas */
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        /* Tabelas */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.9em;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        /* Caixas de destaque */
+        .info-box {
+            background-color: #e8f4f8;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .warning-box {
+            background-color: #fef9e7;
+            border-left: 4px solid #f39c12;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .success-box {
+            background-color: #e8f8f5;
+            border-left: 4px solid #27ae60;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        /* Código */
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* Fluxogramas em texto */
+        .flow {
+            background-color: #f8f9fa;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-line;
+        }
+
+        /* Badges de perfil */
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .badge-vendedor {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .badge-gestor {
+            background-color: #9b59b6;
+            color: white;
+        }
+
+        .badge-admin {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        /* Status */
+        .status-ok {
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .status-atencao {
+            color: #f39c12;
+            font-weight: bold;
+        }
+
+        .status-risco {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        /* Índice */
+        .toc {
+            background-color: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+        }
+
+        .toc ul {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .toc li {
+            padding: 8px 0;
+            border-bottom: 1px dashed #ddd;
+        }
+
+        .toc li:last-child {
+            border-bottom: none;
+        }
+
+        /* Impressão */
+        @media print {
+            body {
+                padding: 0;
+                font-size: 11pt;
+            }
+
+            .cover {
+                padding: 150px 20px;
+            }
+
+            h1 {
+                page-break-before: always;
+            }
+
+            h1:first-of-type {
+                page-break-before: avoid;
+            }
+
+            .no-break {
+                page-break-inside: avoid;
+            }
+
+            .info-box, .warning-box, .success-box, table {
+                page-break-inside: avoid;
+            }
+        }
+
+        /* Ícones simulados */
+        .icon {
+            display: inline-block;
+            width: 20px;
+            text-align: center;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- CAPA -->
+<div class="cover">
+    <h1>Praxis CRM</h1>
+    <p class="subtitle">Manual do Usuário</p>
+    <p class="version">Versão 1.0</p>
+    <p class="date">Fevereiro de 2026</p>
+</div>
+
+<!-- ÍNDICE -->
+<div class="toc">
+    <h2>Índice</h2>
+    <ul>
+        <li><strong>1.</strong> Introdução</li>
+        <li><strong>2.</strong> Perfis de Usuário</li>
+        <li><strong>3.</strong> Acesso ao Sistema</li>
+        <li><strong>4.</strong> Guia do Vendedor</li>
+        <li><strong>5.</strong> Guia do Gestor Comercial</li>
+        <li><strong>6.</strong> Guia do Administrador</li>
+        <li><strong>7.</strong> Pipeline de Vendas</li>
+        <li><strong>8.</strong> Metas Comerciais</li>
+        <li><strong>9.</strong> Perguntas Frequentes</li>
+    </ul>
+</div>
+
+<!-- 1. INTRODUÇÃO -->
+<h1>1. Introdução</h1>
+
+<p>O <strong>Praxis CRM</strong> é um sistema de gestão de relacionamento com clientes desenvolvido para equipes comerciais. Ele permite gerenciar leads, acompanhar oportunidades de vendas e monitorar a performance do time.</p>
+
+<div class="info-box">
+    <strong>Principais funcionalidades:</strong>
+    <ul>
+        <li>Cadastro e gestão de clientes (leads)</li>
+        <li>Pipeline de vendas com etapas personalizadas</li>
+        <li>Registro de interações com clientes</li>
+        <li>Metas comerciais e acompanhamento de performance</li>
+        <li>Dashboards para gestão</li>
+    </ul>
+</div>
+
+<!-- 2. PERFIS DE USUÁRIO -->
+<h1>2. Perfis de Usuário</h1>
+
+<p>O sistema possui três perfis de acesso, cada um com permissões específicas:</p>
+
+<table>
+    <tr>
+        <th>Perfil</th>
+        <th>Descrição</th>
+        <th>Principais Acessos</th>
+    </tr>
+    <tr>
+        <td><span class="badge badge-vendedor">VENDEDOR</span></td>
+        <td>Responsável pela prospecção e fechamento de vendas</td>
+        <td>Seus próprios clientes, oportunidades e metas</td>
+    </tr>
+    <tr>
+        <td><span class="badge badge-gestor">GESTOR</span></td>
+        <td>Acompanha a performance do time comercial</td>
+        <td>Visualização de todos os dados (somente leitura)</td>
+    </tr>
+    <tr>
+        <td><span class="badge badge-admin">ADMIN</span></td>
+        <td>Administrador do sistema</td>
+        <td>Acesso total, incluindo configurações</td>
+    </tr>
+</table>
+
+<h2>2.1 Comparativo de Permissões</h2>
+
+<table>
+    <tr>
+        <th>Ação</th>
+        <th>Vendedor</th>
+        <th>Gestor</th>
+        <th>Admin</th>
+    </tr>
+    <tr>
+        <td>Criar clientes</td>
+        <td>Sim</td>
+        <td>Não</td>
+        <td>Sim</td>
+    </tr>
+    <tr>
+        <td>Criar oportunidades</td>
+        <td>Sim</td>
+        <td>Não</td>
+        <td>Sim</td>
+    </tr>
+    <tr>
+        <td>Ver todos os clientes</td>
+        <td>Não (apenas seus)</td>
+        <td>Sim</td>
+        <td>Sim</td>
+    </tr>
+    <tr>
+        <td>Ativar clientes</td>
+        <td>Não</td>
+        <td>Não</td>
+        <td>Sim</td>
+    </tr>
+    <tr>
+        <td>Ver dashboards de gestão</td>
+        <td>Não</td>
+        <td>Sim</td>
+        <td>Sim</td>
+    </tr>
+    <tr>
+        <td>Criar metas</td>
+        <td>Não</td>
+        <td>Não</td>
+        <td>Sim</td>
+    </tr>
+    <tr>
+        <td>Ver metas do time</td>
+        <td>Não (apenas sua)</td>
+        <td>Sim</td>
+        <td>Sim</td>
+    </tr>
+</table>
+
+<!-- 3. ACESSO AO SISTEMA -->
+<h1>3. Acesso ao Sistema</h1>
+
+<h2>3.1 Login</h2>
+
+<p>Para acessar o sistema:</p>
+
+<ol>
+    <li>Abra o navegador e acesse o endereço do sistema</li>
+    <li>Na tela de login, informe seu <strong>usuário</strong> e <strong>senha</strong></li>
+    <li>Clique em <strong>Entrar</strong></li>
+</ol>
+
+<div class="warning-box">
+    <strong>Importante:</strong> Caso esqueça sua senha, entre em contato com o administrador do sistema para redefinição.
+</div>
+
+<h2>3.2 Menu de Navegação</h2>
+
+<p>Após o login, você verá a barra de navegação no topo da tela com os seguintes itens:</p>
+
+<table>
+    <tr>
+        <th>Menu</th>
+        <th>Descrição</th>
+        <th>Disponível para</th>
+    </tr>
+    <tr>
+        <td>Clientes</td>
+        <td>Lista e cadastro de clientes</td>
+        <td>Todos</td>
+    </tr>
+    <tr>
+        <td>Oportunidades</td>
+        <td>Lista e cadastro de oportunidades</td>
+        <td>Todos</td>
+    </tr>
+    <tr>
+        <td>Interações</td>
+        <td>Registro de contatos com clientes</td>
+        <td>Todos</td>
+    </tr>
+    <tr>
+        <td>Minha Meta</td>
+        <td>Acompanhamento da meta pessoal</td>
+        <td>Vendedor</td>
+    </tr>
+    <tr>
+        <td>Gestão</td>
+        <td>Dashboards e relatórios</td>
+        <td>Gestor e Admin</td>
+    </tr>
+</table>
+
+<!-- 4. GUIA DO VENDEDOR -->
+<h1>4. Guia do Vendedor</h1>
+
+<h2>4.1 Cadastrando um Cliente</h2>
+
+<ol>
+    <li>Acesse <strong>Clientes</strong> no menu</li>
+    <li>Clique em <strong>Novo Cliente</strong></li>
+    <li>Preencha os dados obrigatórios:
+        <ul>
+            <li><strong>Nome:</strong> Nome completo ou razão social</li>
+            <li><strong>Tipo:</strong> B2B (empresa) ou B2C (pessoa física)</li>
+        </ul>
+    </li>
+    <li>Preencha os dados opcionais (telefone, e-mail, contato principal)</li>
+    <li>Clique em <strong>Salvar</strong></li>
+</ol>
+
+<div class="info-box">
+    <strong>Dica:</strong> O cliente será criado com status <strong>Provisório</strong>. Isso permite cadastro rápido sem burocracia. O CNPJ/CPF será exigido apenas quando o admin for ativar o cliente.
+</div>
+
+<h2>4.2 Cadastrando uma Oportunidade</h2>
+
+<ol>
+    <li>Acesse <strong>Oportunidades</strong> no menu</li>
+    <li>Clique em <strong>Nova Oportunidade</strong></li>
+    <li>Preencha:
+        <ul>
+            <li><strong>Título:</strong> Nome descritivo da oportunidade</li>
+            <li><strong>Cliente:</strong> Selecione o cliente relacionado</li>
+            <li><strong>Valor estimado:</strong> Valor previsto da venda</li>
+            <li><strong>Descrição:</strong> Detalhes adicionais (opcional)</li>
+        </ul>
+    </li>
+    <li>Clique em <strong>Salvar</strong></li>
+</ol>
+
+<h2>4.3 Avançando no Pipeline</h2>
+
+<p>Cada oportunidade passa por etapas até o fechamento:</p>
+
+<div class="flow">
+Prospecção → Qualificação → Proposta → Negociação → Fechamento
+</div>
+
+<p>Para avançar uma oportunidade:</p>
+
+<ol>
+    <li>Acesse a oportunidade clicando nela na lista</li>
+    <li>Na tela de detalhes, clique em <strong>Avançar Etapa</strong></li>
+    <li>A oportunidade passará para a próxima etapa automaticamente</li>
+</ol>
+
+<div class="warning-box">
+    <strong>Atenção:</strong> Oportunidades marcadas como <strong>Perdida</strong> ou já em <strong>Fechamento</strong> não podem avançar.
+</div>
+
+<h2>4.4 Registrando Interações</h2>
+
+<p>Registre todos os contatos realizados com o cliente:</p>
+
+<ol>
+    <li>Acesse <strong>Interações</strong> no menu</li>
+    <li>Clique em <strong>Nova Interação</strong></li>
+    <li>Preencha:
+        <ul>
+            <li><strong>Oportunidade:</strong> Selecione a oportunidade relacionada</li>
+            <li><strong>Tipo:</strong> Ligação, E-mail, Reunião, WhatsApp ou Visita</li>
+            <li><strong>Descrição:</strong> Resumo do que foi tratado</li>
+        </ul>
+    </li>
+    <li>Clique em <strong>Salvar</strong></li>
+</ol>
+
+<h2>4.5 Acompanhando sua Meta</h2>
+
+<ol>
+    <li>Acesse <strong>Minha Meta</strong> no menu</li>
+    <li>Visualize:
+        <ul>
+            <li><strong>Meta:</strong> Valor definido para o mês</li>
+            <li><strong>Realizado:</strong> Vendas fechadas no mês</li>
+            <li><strong>Pipeline:</strong> Oportunidades em andamento</li>
+            <li><strong>Status:</strong> Situação da meta (OK, Atenção ou Risco)</li>
+        </ul>
+    </li>
+</ol>
+
+<!-- 5. GUIA DO GESTOR -->
+<h1>5. Guia do Gestor Comercial</h1>
+
+<p>O gestor tem acesso de <strong>somente leitura</strong> a todos os dados do sistema para análise e acompanhamento.</p>
+
+<h2>5.1 Dashboard de Gestão</h2>
+
+<p>Acesse pelo menu <strong>Gestão → Dashboard</strong>:</p>
+
+<ul>
+    <li><strong>Total de Leads:</strong> Clientes com status Provisório</li>
+    <li><strong>Clientes Ativos:</strong> Clientes já aprovados</li>
+    <li><strong>Oportunidades Abertas:</strong> Negócios em andamento</li>
+    <li><strong>Valor em Pipeline:</strong> Soma dos valores das oportunidades abertas</li>
+</ul>
+
+<h2>5.2 Leads por Vendedor</h2>
+
+<p>Acesse pelo menu <strong>Gestão → Leads por Vendedor</strong>:</p>
+
+<table>
+    <tr>
+        <th>Métrica</th>
+        <th>Descrição</th>
+    </tr>
+    <tr>
+        <td>Leads Criados</td>
+        <td>Clientes provisórios criados pelo vendedor</td>
+    </tr>
+    <tr>
+        <td>Total Clientes</td>
+        <td>Total de clientes do vendedor</td>
+    </tr>
+    <tr>
+        <td>Oportunidades</td>
+        <td>Número de oportunidades geradas</td>
+    </tr>
+    <tr>
+        <td>Conversão</td>
+        <td>% de clientes que geraram oportunidades</td>
+    </tr>
+</table>
+
+<h2>5.3 Pipeline Geral</h2>
+
+<p>Acesse pelo menu <strong>Gestão → Pipeline Geral</strong>:</p>
+
+<ul>
+    <li>Visão consolidada por etapa</li>
+    <li>Valor total em cada etapa</li>
+    <li>Detalhamento por vendedor</li>
+</ul>
+
+<h2>5.4 Metas por Vendedor</h2>
+
+<p>Acesse pelo menu <strong>Gestão → Metas por Vendedor</strong>:</p>
+
+<ul>
+    <li>Meta de cada vendedor</li>
+    <li>Valor realizado</li>
+    <li>Valor em pipeline</li>
+    <li>Status da meta</li>
+</ul>
+
+<!-- 6. GUIA DO ADMINISTRADOR -->
+<h1>6. Guia do Administrador</h1>
+
+<p>O administrador possui acesso total ao sistema, incluindo o painel administrativo do Django.</p>
+
+<h2>6.1 Acessando o Django Admin</h2>
+
+<ol>
+    <li>Clique no seu nome no canto superior direito</li>
+    <li>Selecione <strong>Admin</strong></li>
+    <li>Ou acesse diretamente: <code>/admin/</code></li>
+</ol>
+
+<h2>6.2 Gerenciando Usuários</h2>
+
+<ol>
+    <li>No Admin, acesse <strong>Usuários</strong></li>
+    <li>Para criar um novo usuário:
+        <ul>
+            <li>Clique em <strong>Adicionar usuário</strong></li>
+            <li>Defina usuário e senha</li>
+            <li>Na próxima tela, defina o <strong>Perfil</strong> (Vendedor, Gestor ou Admin)</li>
+            <li>Marque <strong>É da equipe</strong> se o usuário precisar acessar o Admin</li>
+        </ul>
+    </li>
+</ol>
+
+<h2>6.3 Ativando Clientes</h2>
+
+<p>Clientes criados por vendedores ficam com status <strong>Provisório</strong> até serem aprovados:</p>
+
+<ol>
+    <li>No Admin, acesse <strong>Clientes</strong></li>
+    <li>Localize o cliente provisório</li>
+    <li>Verifique se o CNPJ/CPF está preenchido</li>
+    <li>Selecione o cliente e use a ação <strong>Ativar clientes selecionados</strong></li>
+</ol>
+
+<div class="warning-box">
+    <strong>Regra:</strong> O CNPJ/CPF é obrigatório para ativar um cliente. Caso não esteja preenchido, a ativação será bloqueada.
+</div>
+
+<h2>6.4 Cadastrando Metas</h2>
+
+<ol>
+    <li>No Admin, acesse <strong>Metas Comerciais</strong></li>
+    <li>Clique em <strong>Adicionar meta comercial</strong></li>
+    <li>Preencha:
+        <ul>
+            <li><strong>Vendedor:</strong> Selecione o vendedor</li>
+            <li><strong>Mês:</strong> Mês da meta</li>
+            <li><strong>Ano:</strong> Ano da meta</li>
+            <li><strong>Valor da Meta:</strong> Valor monetário</li>
+        </ul>
+    </li>
+    <li>Clique em <strong>Salvar</strong></li>
+</ol>
+
+<div class="info-box">
+    <strong>Regra:</strong> Cada vendedor pode ter apenas UMA meta por mês/ano. Se tentar criar uma duplicada, o sistema bloqueará.
+</div>
+
+<!-- 7. PIPELINE DE VENDAS -->
+<h1>7. Pipeline de Vendas</h1>
+
+<p>O pipeline é o caminho que uma oportunidade percorre desde o primeiro contato até o fechamento da venda.</p>
+
+<h2>7.1 Etapas do Pipeline</h2>
+
+<div class="no-break">
+<h3>Prospecção</h3>
+<p>Primeiro contato com o potencial cliente. Ainda não há demanda validada.</p>
+<p><strong>Exemplos:</strong> Lead frio, indicação, primeiro contato via WhatsApp.</p>
+</div>
+
+<div class="no-break">
+<h3>Qualificação</h3>
+<p>O vendedor validou que o lead tem potencial real de compra.</p>
+<p><strong>Exemplos:</strong> Confirmação de volume, identificação do decisor, pedido de cotação.</p>
+</div>
+
+<div class="no-break">
+<h3>Proposta</h3>
+<p>Uma proposta comercial foi apresentada ao cliente.</p>
+<p><strong>Exemplos:</strong> Orçamento enviado, proposta formal por e-mail.</p>
+</div>
+
+<div class="no-break">
+<h3>Negociação</h3>
+<p>Cliente demonstrou intenção de fechar, mas negocia condições.</p>
+<p><strong>Exemplos:</strong> Ajuste de preço, negociação de prazos.</p>
+</div>
+
+<div class="no-break">
+<h3>Fechamento</h3>
+<p>Venda concluída com sucesso.</p>
+<p><strong>Exemplos:</strong> Pedido confirmado, contrato assinado.</p>
+</div>
+
+<div class="no-break">
+<h3>Perdida</h3>
+<p>Venda não realizada.</p>
+<p><strong>Exemplos:</strong> Cliente desistiu, concorrente venceu.</p>
+</div>
+
+<!-- 8. METAS COMERCIAIS -->
+<h1>8. Metas Comerciais</h1>
+
+<h2>8.1 Como funcionam as Metas</h2>
+
+<p>As metas são definidas mensalmente pelo administrador para cada vendedor.</p>
+
+<h2>8.2 Cálculo do Realizado</h2>
+
+<div class="success-box">
+    <strong>Realizado</strong> = Soma dos valores das oportunidades com status <strong>Fechamento</strong> no mês/ano.
+</div>
+
+<h2>8.3 Cálculo do Pipeline</h2>
+
+<div class="info-box">
+    <strong>Pipeline</strong> = Soma dos valores das oportunidades em andamento (excluindo Fechamento e Perdida).
+</div>
+
+<h2>8.4 Status da Meta</h2>
+
+<table>
+    <tr>
+        <th>Status</th>
+        <th>Condição</th>
+        <th>Significado</th>
+    </tr>
+    <tr>
+        <td><span class="status-ok">OK</span></td>
+        <td>Pipeline ≥ 1,5× a meta</td>
+        <td>Boa cobertura de pipeline</td>
+    </tr>
+    <tr>
+        <td><span class="status-atencao">ATENÇÃO</span></td>
+        <td>Pipeline ≥ meta</td>
+        <td>Cobertura mínima</td>
+    </tr>
+    <tr>
+        <td><span class="status-risco">RISCO</span></td>
+        <td>Pipeline < meta</td>
+        <td>Necessita ação urgente</td>
+    </tr>
+</table>
+
+<div class="info-box">
+    <strong>Por que 1,5×?</strong> Nem todas as oportunidades se convertem em venda. Ter um pipeline de pelo menos 1,5× a meta garante uma margem de segurança para atingir o objetivo.
+</div>
+
+<!-- 9. PERGUNTAS FREQUENTES -->
+<h1>9. Perguntas Frequentes</h1>
+
+<h3>Por que não consigo ver os clientes de outros vendedores?</h3>
+<p>Por segurança, cada vendedor vê apenas seus próprios clientes e oportunidades. Gestores e admins podem ver todos os dados.</p>
+
+<h3>Por que não consigo ativar um cliente?</h3>
+<p>Apenas administradores podem ativar clientes. Além disso, o cliente precisa ter o CNPJ/CPF preenchido.</p>
+
+<h3>Como marco uma oportunidade como perdida?</h3>
+<p>Na tela de detalhes da oportunidade, clique em <strong>Marcar como Perdida</strong>.</p>
+
+<h3>Posso editar uma meta depois de criada?</h3>
+<p>Sim, o administrador pode editar metas no Django Admin.</p>
+
+<h3>O que acontece se eu tentar criar uma meta duplicada?</h3>
+<p>O sistema não permite duas metas para o mesmo vendedor no mesmo mês/ano.</p>
+
+<h3>Como sou notificado sobre minha meta?</h3>
+<p>Acesse a tela <strong>Minha Meta</strong> regularmente para acompanhar seu progresso. O status (OK, Atenção, Risco) indica sua situação.</p>
+
+<hr style="margin: 50px 0; border: none; border-top: 1px solid #ddd;">
+
+<p style="text-align: center; color: #95a5a6;">
+    <strong>Praxis CRM</strong> — Manual do Usuário v1.0<br>
+    Desenvolvido com Django 5.x
+</p>
+
+</body>
+</html>

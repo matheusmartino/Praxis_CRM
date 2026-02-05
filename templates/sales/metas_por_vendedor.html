@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block title %}Metas por Vendedor - Praxis CRM{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-people"></i> Metas por Vendedor</h2>
+    <a href="{% url 'gestao:dashboard' %}" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i> Voltar
+    </a>
+</div>
+
+<!-- Filtro de período -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-3 align-items-end">
+            <div class="col-md-4">
+                <label class="form-label">Mês</label>
+                <select name="mes" class="form-select">
+                    {% for valor, nome in meses %}
+                    <option value="{{ valor }}" {% if valor == mes %}selected{% endif %}>{{ nome }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Ano</label>
+                <select name="ano" class="form-select">
+                    {% for a in "01234"|make_list %}
+                    {% with ano_opcao=ano_atual|add:a|add:"-2" %}
+                    <option value="{{ ano_opcao }}" {% if ano_opcao == ano %}selected{% endif %}>{{ ano_opcao }}</option>
+                    {% endwith %}
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-search"></i> Filtrar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Tabela de metas -->
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">
+            <i class="bi bi-table"></i>
+            Metas - {{ mes }}/{{ ano }}
+        </h5>
+    </div>
+    <div class="card-body">
+        {% if metas %}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Vendedor</th>
+                        <th class="text-end">Meta</th>
+                        <th class="text-end">Realizado</th>
+                        <th class="text-end">%</th>
+                        <th class="text-end">Pipeline</th>
+                        <th class="text-center">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in metas %}
+                    <tr>
+                        <td>
+                            <strong>{{ item.meta.vendedor.get_full_name|default:item.meta.vendedor.username }}</strong>
+                            <br>
+                            <small class="text-muted">{{ item.meta.vendedor.email }}</small>
+                        </td>
+                        <td class="text-end">R$ {{ item.valor_meta|floatformat:2 }}</td>
+                        <td class="text-end">
+                            <span class="{% if item.realizado >= item.valor_meta %}text-success fw-bold{% endif %}">
+                                R$ {{ item.realizado|floatformat:2 }}
+                            </span>
+                        </td>
+                        <td class="text-end">
+                            {% if item.percentual >= 100 %}
+                            <span class="badge bg-success">{{ item.percentual }}%</span>
+                            {% elif item.percentual >= 75 %}
+                            <span class="badge bg-info">{{ item.percentual }}%</span>
+                            {% elif item.percentual >= 50 %}
+                            <span class="badge bg-warning text-dark">{{ item.percentual }}%</span>
+                            {% else %}
+                            <span class="badge bg-secondary">{{ item.percentual }}%</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-end">R$ {{ item.pipeline|floatformat:2 }}</td>
+                        <td class="text-center">
+                            {% if item.status == 'OK' %}
+                            <span class="badge bg-success"><i class="bi bi-check-circle"></i> OK</span>
+                            {% elif item.status == 'ATENCAO' %}
+                            <span class="badge bg-warning text-dark"><i class="bi bi-exclamation-triangle"></i> Atenção</span>
+                            {% else %}
+                            <span class="badge bg-danger"><i class="bi bi-x-circle"></i> Risco</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info mb-0">
+            <i class="bi bi-info-circle"></i> Nenhuma meta cadastrada para este período.
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Legenda -->
+<div class="card mt-4">
+    <div class="card-header">
+        <h5 class="mb-0"><i class="bi bi-info-circle"></i> Legenda de Status</h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+                <span class="badge bg-success">OK</span>
+                <span class="ms-2">Pipeline >= 1,5x a meta</span>
+            </div>
+            <div class="col-md-4">
+                <span class="badge bg-warning text-dark">Atenção</span>
+                <span class="ms-2">Pipeline >= meta</span>
+            </div>
+            <div class="col-md-4">
+                <span class="badge bg-danger">Risco</span>
+                <span class="ms-2">Pipeline < meta</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

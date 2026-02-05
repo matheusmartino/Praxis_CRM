@@ -1,5 +1,6 @@
 from django.contrib import admin
 
+from apps.core.admin_mixins import GestorReadOnlyAdminMixin
 from apps.crm.models import Cliente
 from apps.crm.services import ativar_cliente, inativar_cliente
 
@@ -17,7 +18,7 @@ def inativar_clientes(modeladmin, request, queryset):
 
 
 @admin.register(Cliente)
-class ClienteAdmin(admin.ModelAdmin):
+class ClienteAdmin(GestorReadOnlyAdminMixin, admin.ModelAdmin):
     list_display = (
         "nome", "cnpj_cpf", "tipo", "status",
         "nome_contato_principal", "telefone", "criado_por", "criado_em",

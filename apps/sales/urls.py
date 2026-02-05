@@ -3,6 +3,8 @@ from django.urls import path
 from apps.sales.views import (
     InteracaoCreateView,
     InteracaoListView,
+    MetasPorVendedorView,
+    MinhaMetaView,
     OportunidadeAvancarView,
     OportunidadeCreateView,
     OportunidadeDetailView,
@@ -20,4 +22,7 @@ urlpatterns = [
     path("oportunidades/<int:pk>/perdida/", OportunidadePerdidaView.as_view(), name="oportunidade_perdida"),
     path("interacoes/", InteracaoListView.as_view(), name="interacao_list"),
     path("interacoes/nova/", InteracaoCreateView.as_view(), name="interacao_create"),
+    # Metas comerciais
+    path("minha-meta/", MinhaMetaView.as_view(), name="minha_meta"),
+    path("metas/", MetasPorVendedorView.as_view(), name="metas_por_vendedor"),
 ]

@@ -49,12 +49,161 @@ O vendedor só visualiza seus próprios clientes e oportunidades.
 
 O campo `cnpj_cpf` é opcional durante o cadastro rápido (cliente provisório). Ao tentar **ativar** o cliente (via Admin ou service), o sistema exige que o CNPJ/CPF esteja preenchido. Isso permite que o vendedor registre leads rapidamente sem burocracia e o admin só aprove clientes com documentação completa.
 
+## Fluxo do gestor comercial
+
+O gestor comercial tem acesso **somente leitura** para avaliar leads, pipeline e performance do time.
+
+1. Fazer login em `/accounts/login/`
+2. Acessar o menu **Gestão** na barra de navegação
+3. Visualizar o **Dashboard** com totais de leads, oportunidades e valores em pipeline
+4. Acessar **Leads por Vendedor** para avaliar a performance individual
+5. Acessar **Pipeline Geral** para visão consolidada por etapa e por vendedor
+6. Acessar o Django Admin (modo leitura) para consultas detalhadas
+
+O gestor visualiza todos os dados mas **não pode** criar, editar ou excluir registros.
+
 ## Fluxo do admin
 
 1. Acessar o Django Admin em `/admin/`
 2. Ativar ou inativar clientes provisórios
 3. Visualizar todos os clientes, oportunidades e interações
 4. Gerenciar usuários e perfis
+5. Acesso total às telas de gestão
+
+## Perfis e responsabilidades
+
+| Perfil | Responsabilidades | Acessos |
+|--------|-------------------|---------|
+| **VENDEDOR** | Prospectar leads, criar clientes provisórios, gerenciar oportunidades próprias, registrar interações | Apenas seus próprios clientes e oportunidades |
+| **GESTOR** | Avaliar leads e performance, monitorar pipeline, acompanhar conversões | Visualização de todos os dados (somente leitura) |
+| **ADMIN** | Ativar/inativar clientes, gerenciar usuários, configurar sistema | Acesso total ao sistema |
+
+## Fluxo de avaliação de leads
+
+```
+[VENDEDOR cadastra cliente]
+        ↓
+[Cliente fica como PROVISÓRIO]
+        ↓
+[GESTOR avalia leads no Dashboard]
+        ├── Leads por Vendedor (performance individual)
+        └── Pipeline Geral (visão consolidada)
+        ↓
+[ADMIN ativa clientes aprovados]
+        ↓
+[Cliente passa para ATIVO]
+        ↓
+[Oportunidade pode avançar no pipeline]
+```
+
+## Etapas do Pipeline de Vendas
+
+O Paxis CRM utiliza um pipeline simples e sequencial para acompanhar o ciclo completo de vendas. Cada oportunidade sempre se encontra em **uma única etapa**.
+
+### Prospecção
+Primeiro contato com o potencial cliente. Ainda não há demanda claramente validada, apenas interesse inicial.
+
+Exemplos:
+- Lead frio
+- Indicação
+- Primeiro contato via WhatsApp ou telefone
+
+---
+
+### Qualificação
+O vendedor validou que o lead possui potencial real de compra, perfil adequado e necessidade identificada.
+
+Exemplos:
+- Confirmação de volume
+- Identificação do decisor
+- Pedido de cotação
+
+---
+
+### Proposta
+Uma proposta comercial foi apresentada ao cliente.
+
+Exemplos:
+- Orçamento enviado
+- Proposta formal por e-mail ou WhatsApp
+
+---
+
+### Negociação
+Cliente demonstrou intenção de fechar, mas ainda negocia condições comerciais.
+
+Exemplos:
+- Ajuste de preço
+- Negociação de prazos
+- Revisão de quantidades
+
+---
+
+### Fechamento
+Venda concluída com sucesso.
+
+Exemplos:
+- Pedido confirmado
+- Contrato fechado
+- Venda registrada no sistema de faturamento
+
+---
+
+### Perdida
+Venda não realizada.
+
+Exemplos:
+- Cliente desistiu
+- Preço não aprovado
+- Concorrente venceu
+
+---
+
+## Metas Comerciais (Etapa 3)
+
+O sistema permite definir metas mensais para cada vendedor e acompanhar o desempenho.
+
+### Model MetaComercial
+
+| Campo | Descrição |
+|-------|-----------|
+| vendedor | Usuário vendedor (FK) |
+| mes | Mês da meta (1-12) |
+| ano | Ano da meta |
+| valor_meta | Valor monetário da meta |
+| criado_por | Admin que criou a meta |
+
+**Regra:** Apenas UMA meta por vendedor por mês/ano (constraint unique).
+
+### Regras de Cálculo
+
+**Realizado:**
+- Soma de `valor_estimado` das oportunidades com etapa = FECHAMENTO
+- Filtrado pelo mês/ano em que a oportunidade foi fechada (`atualizado_em`)
+
+**Pipeline:**
+- Soma de `valor_estimado` das oportunidades abertas (etapa != FECHAMENTO e != PERDIDA)
+- Filtrado pelo mês/ano de criação da oportunidade
+
+**Status:**
+| Status | Condição |
+|--------|----------|
+| OK | Pipeline >= 1,5x a meta |
+| ATENÇÃO | Pipeline >= meta |
+| RISCO | Pipeline < meta |
+
+### Quem pode ver o quê
+
+| Perfil | Acesso |
+|--------|--------|
+| **VENDEDOR** | Apenas sua própria meta (`/sales/minha-meta/`) |
+| **GESTOR** | Metas de todos os vendedores (`/sales/metas/`) |
+| **ADMIN** | Metas de todos + pode criar/editar metas no Django Admin |
+
+### URLs
+
+- `/sales/minha-meta/` — Vendedor vê sua meta
+- `/sales/metas/` — Gestor/Admin vê todas as metas
 
 ## Decisões de arquitetura
 

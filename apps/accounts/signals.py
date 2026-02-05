@@ -8,7 +8,7 @@ from apps.accounts.models import Perfil
 @receiver(post_save, sender=User)
 def criar_perfil(sender, instance, created, **kwargs):
     if created:
-        Perfil.objects.create(user=instance)
+        Perfil.objects.get_or_create(user=instance)
 
 
 @receiver(post_save, sender=User)

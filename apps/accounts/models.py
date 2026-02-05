@@ -31,3 +31,7 @@ class Perfil(models.Model):
     @property
     def is_vendedor(self):
         return self.papel == PerfilUsuario.VENDEDOR
+
+    @property
+    def is_gestor(self):
+        return self.papel == PerfilUsuario.GESTOR

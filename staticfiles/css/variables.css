@@ -1,0 +1,129 @@
+/**
+ * Praxis CRM - Variáveis de Estilo
+ *
+ * Este arquivo contém as variáveis CSS do projeto.
+ * Importe antes de outros estilos para manter consistência.
+ */
+
+:root {
+    /* =========================================
+       CORES PRINCIPAIS
+       ========================================= */
+    --praxis-azul-escuro: #2c3e50;
+    --praxis-azul-principal: #3498db;
+    --praxis-azul-hover: #2980b9;
+    --praxis-azul-medio: #34495e;
+
+    /* =========================================
+       CORES DE TEXTO
+       ========================================= */
+    --praxis-texto-principal: #333333;
+    --praxis-texto-secundario: #7f8c8d;
+    --praxis-texto-muted: #95a5a6;
+
+    /* =========================================
+       CORES DE FUNDO
+       ========================================= */
+    --praxis-fundo-branco: #ffffff;
+    --praxis-fundo-cinza: #f8f9fa;
+    --praxis-fundo-code: #f4f4f4;
+
+    /* =========================================
+       CORES DE STATUS
+       ========================================= */
+    --praxis-verde: #27ae60;
+    --praxis-verde-fundo: #e8f8f5;
+    --praxis-laranja: #f39c12;
+    --praxis-laranja-fundo: #fef9e7;
+    --praxis-vermelho: #e74c3c;
+    --praxis-roxo: #9b59b6;
+
+    /* =========================================
+       CORES DE BORDA
+       ========================================= */
+    --praxis-borda: #dddddd;
+    --praxis-borda-clara: #bdc3c7;
+
+    /* =========================================
+       TIPOGRAFIA
+       ========================================= */
+    --praxis-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --praxis-font-mono: 'Courier New', monospace;
+
+    --praxis-font-size-base: 16px;
+    --praxis-font-size-sm: 0.9em;
+    --praxis-font-size-xs: 0.85em;
+
+    --praxis-font-weight-normal: 400;
+    --praxis-font-weight-semibold: 600;
+    --praxis-font-weight-bold: 700;
+
+    --praxis-line-height: 1.6;
+    --praxis-line-height-tight: 1.2;
+    --praxis-line-height-relaxed: 1.7;
+
+    /* =========================================
+       ESPAÇAMENTO
+       ========================================= */
+    --praxis-spacing-xs: 5px;
+    --praxis-spacing-sm: 10px;
+    --praxis-spacing-md: 15px;
+    --praxis-spacing-lg: 20px;
+    --praxis-spacing-xl: 30px;
+    --praxis-spacing-2xl: 40px;
+    --praxis-spacing-section: 80px;
+
+    /* =========================================
+       BORDAS
+       ========================================= */
+    --praxis-border-radius-sm: 3px;
+    --praxis-border-radius: 5px;
+    --praxis-border-radius-lg: 8px;
+    --praxis-border-radius-xl: 10px;
+    --praxis-border-radius-full: 15px;
+
+    /* =========================================
+       SOMBRAS
+       ========================================= */
+    --praxis-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    --praxis-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+    /* =========================================
+       TRANSIÇÕES
+       ========================================= */
+    --praxis-transition: all 0.2s ease;
+    --praxis-transition-fast: all 0.15s ease;
+
+    /* =========================================
+       CONTAINERS
+       ========================================= */
+    --praxis-container-max: 1000px;
+    --praxis-container-narrow: 800px;
+    --praxis-container-wide: 1200px;
+}
+
+/* =========================================
+   CLASSES UTILITÁRIAS DE COR
+   ========================================= */
+
+.text-praxis-primary { color: var(--praxis-azul-principal); }
+.text-praxis-dark { color: var(--praxis-azul-escuro); }
+.text-praxis-muted { color: var(--praxis-texto-muted); }
+.text-praxis-success { color: var(--praxis-verde); }
+.text-praxis-warning { color: var(--praxis-laranja); }
+.text-praxis-danger { color: var(--praxis-vermelho); }
+
+.bg-praxis-primary { background-color: var(--praxis-azul-principal); }
+.bg-praxis-dark { background-color: var(--praxis-azul-escuro); }
+.bg-praxis-light { background-color: var(--praxis-fundo-cinza); }
+.bg-praxis-success { background-color: var(--praxis-verde-fundo); }
+.bg-praxis-warning { background-color: var(--praxis-laranja-fundo); }
+
+/* =========================================
+   BORDAS DE DESTAQUE
+   ========================================= */
+
+.border-praxis-primary { border-color: var(--praxis-azul-principal); }
+.border-praxis-success { border-color: var(--praxis-verde); }
+.border-praxis-warning { border-color: var(--praxis-laranja); }
+.border-praxis-danger { border-color: var(--praxis-vermelho); }

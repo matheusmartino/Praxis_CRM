@@ -12,7 +12,8 @@
       "Bash(python:*)",
       "Bash(set DJANGO_SETTINGS_MODULE=config.settings.dev)",
       "Bash(where:*)",
-      "Bash(start \"\" \"C:\\\\Users\\\\matheus.martino\\\\source\\\\repos_personal\\\\Praxis_CRM\\\\docs\\\\manual_usuario.html\")"
+      "Bash(start \"\" \"C:\\\\Users\\\\matheus.martino\\\\source\\\\repos_personal\\\\Praxis_CRM\\\\docs\\\\manual_usuario.html\")",
+      "Bash(dir:*)"
     ]
   }
 }

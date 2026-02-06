@@ -12,6 +12,16 @@ class GestorReadOnlyAdminMixin:
             return request.user.perfil.papel == PerfilUsuario.GESTOR
         return False
 
+    def has_module_permission(self, request):
+        if self._is_gestor(request):
+            return True
+        return super().has_module_permission(request)
+
+    def has_view_permission(self, request, obj=None):
+        if self._is_gestor(request):
+            return True
+        return super().has_view_permission(request, obj)
+
     def has_add_permission(self, request):
         if self._is_gestor(request):
             return False

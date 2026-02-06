@@ -14,7 +14,7 @@ from django.core.mail import send_mail
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 
-from apps.core.enums import EtapaOportunidade, Perfil
+from apps.core.enums import EtapaOportunidade, PerfilUsuario
 from apps.sales.models import Oportunidade
 
 User = get_user_model()
@@ -92,7 +92,7 @@ class Command(BaseCommand):
             if not vendedor.email:
                 continue
             # Verificar se é um vendedor (não enviar para gestor/admin)
-            if hasattr(vendedor, "perfil") and vendedor.perfil.perfil != Perfil.VENDEDOR:
+            if hasattr(vendedor, "perfil") and vendedor.perfil.papel != PerfilUsuario.VENDEDOR:
                 continue
 
             if vendedor not in vendedores_dict:

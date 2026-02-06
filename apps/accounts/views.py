@@ -2,10 +2,11 @@ from django.conf import settings
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 from django.http import FileResponse, Http404
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.utils import timezone
 
 from apps.accounts.forms import LoginForm
+from apps.core.enums import PerfilUsuario
 from apps.crm.models import Cliente
 from apps.sales.models import Oportunidade
 
@@ -22,6 +23,14 @@ class LogoutView(auth_views.LogoutView):
 @login_required
 def home_view(request):
     user = request.user
+
+    # Gestor/Admin: redireciona para dashboard de gestão (evita dashboard vazio)
+    if hasattr(user, "perfil") and user.perfil.papel in (
+        PerfilUsuario.GESTOR,
+        PerfilUsuario.ADMIN,
+    ):
+        return redirect("gestao:dashboard")
+
     clientes_recentes = Cliente.objects.filter(criado_por=user).order_by("-criado_em")[:5]
     oportunidades_abertas = Oportunidade.objects.filter(vendedor=user).exclude(
         etapa__in=["FECHAMENTO", "PERDIDA"]

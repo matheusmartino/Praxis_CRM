@@ -64,6 +64,10 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://praxiscrm-bpczdufkc2f3afah.brazilsouth-01.azurewebsites.net",
+]
+
 LANGUAGE_CODE = "pt-br"
 TIME_ZONE = "America/Sao_Paulo"
 USE_I18N = True

@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import include, path
 
-from apps.accounts.views import home_view, manual_view
+from apps.accounts.views import home_view, landing_view, manual_view
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -10,5 +10,6 @@ urlpatterns = [
     path("sales/", include("apps.sales.urls")),
     path("gestao/", include("apps.gestao.urls")),
     path("manual/", manual_view, name="manual"),
-    path("", home_view, name="home"),
+    path("dashboard/", home_view, name="home"),  # Dashboard do usuário logado
+    path("", landing_view, name="landing"),  # Landing page como raiz
 ]

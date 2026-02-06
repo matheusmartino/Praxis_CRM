@@ -1,5 +1,8 @@
+from datetime import timedelta
+
 from django.contrib.auth import get_user_model
 from django.db.models import Count, Sum
+from django.utils import timezone
 from django.views.generic import TemplateView
 
 from apps.core.enums import EtapaOportunidade, StatusCliente
@@ -8,6 +11,9 @@ from apps.crm.models import Cliente
 from apps.sales.models import Oportunidade
 
 User = get_user_model()
+
+# Número de dias para considerar uma oportunidade como "parada"
+DIAS_OPORTUNIDADE_PARADA = 7
 
 
 class DashboardGestorView(GestorRequiredMixin, TemplateView):
@@ -51,6 +57,20 @@ class DashboardGestorView(GestorRequiredMixin, TemplateView):
             )["total"]
             or 0
         )
+
+        # Alerta visual: oportunidades sem follow-up ou paradas
+        data_limite = timezone.now() - timedelta(days=DIAS_OPORTUNIDADE_PARADA)
+
+        # Oportunidades sem data_follow_up
+        sem_followup = oportunidades_abertas.filter(data_follow_up__isnull=True).count()
+
+        # Oportunidades paradas há mais de X dias
+        paradas = oportunidades_abertas.filter(atualizado_em__lt=data_limite).count()
+
+        context["oportunidades_sem_followup"] = sem_followup
+        context["oportunidades_paradas"] = paradas
+        context["dias_oportunidade_parada"] = DIAS_OPORTUNIDADE_PARADA
+        context["total_alerta_disciplina"] = sem_followup + paradas
 
         return context
 

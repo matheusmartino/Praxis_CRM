@@ -7,6 +7,22 @@
     <h2><i class="bi bi-graph-up"></i> Dashboard Gestão Comercial</h2>
 </div>
 
+{% if total_alerta_disciplina > 0 %}
+<div class="alert alert-warning d-flex align-items-center mb-4" role="alert">
+    <i class="bi bi-exclamation-triangle-fill me-2 fs-4"></i>
+    <div>
+        <strong>Alerta de Disciplina Comercial:</strong>
+        {% if oportunidades_sem_followup > 0 %}
+            {{ oportunidades_sem_followup }} oportunidade{{ oportunidades_sem_followup|pluralize }} sem follow-up definido.
+        {% endif %}
+        {% if oportunidades_paradas > 0 %}
+            {{ oportunidades_paradas }} oportunidade{{ oportunidades_paradas|pluralize }} parada{{ oportunidades_paradas|pluralize }} há mais de {{ dias_oportunidade_parada }} dias.
+        {% endif %}
+        <a href="{% url 'sales:sem_followup' %}" class="alert-link">Ver detalhes</a>
+    </div>
+</div>
+{% endif %}
+
 <div class="row g-4">
     <div class="col-md-4">
         <div class="card bg-info text-white h-100">

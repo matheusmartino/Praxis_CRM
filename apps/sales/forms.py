@@ -24,3 +24,21 @@ class InteracaoForm(forms.ModelForm):
             "tipo": forms.Select(attrs={"class": "form-select"}),
             "descricao": forms.Textarea(attrs={"class": "form-control", "rows": 3}),
         }
+
+
+class FollowUpForm(forms.ModelForm):
+    """Formulário para editar campos de follow-up."""
+
+    class Meta:
+        model = Oportunidade
+        fields = ["proxima_acao", "data_follow_up"]
+        widgets = {
+            "proxima_acao": forms.TextInput(attrs={
+                "class": "form-control",
+                "placeholder": "Ex: Ligar para confirmar proposta",
+            }),
+            "data_follow_up": forms.DateInput(attrs={
+                "class": "form-control",
+                "type": "date",
+            }),
+        }

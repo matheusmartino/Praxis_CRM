@@ -40,6 +40,11 @@
                             <i class="bi bi-bullseye"></i> Minha Meta
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'sales:minhas_pendencias' %}">
+                            <i class="bi bi-bell"></i> Pendências
+                        </a>
+                    </li>
                     {% endif %}
                     {% if user.perfil.is_gestor or user.perfil.is_admin %}
                     <li class="nav-item dropdown">
@@ -52,6 +57,7 @@
                             <li><a class="dropdown-item" href="{% url 'gestao:pipeline_geral' %}">Pipeline Geral</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="{% url 'sales:metas_por_vendedor' %}">Metas por Vendedor</a></li>
+                            <li><a class="dropdown-item" href="{% url 'sales:sem_followup' %}">Sem Follow-up</a></li>
                         </ul>
                     </li>
                     {% endif %}

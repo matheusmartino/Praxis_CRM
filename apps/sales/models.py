@@ -32,6 +32,19 @@ class Oportunidade(models.Model):
         verbose_name="Valor estimado",
     )
     descricao = models.TextField(blank=True, verbose_name="Descrição")
+    proxima_acao = models.CharField(
+        max_length=200,
+        blank=True,
+        default="",
+        verbose_name="Próxima ação",
+        help_text="Descreva brevemente a próxima ação a ser realizada",
+    )
+    data_follow_up = models.DateField(
+        null=True,
+        blank=True,
+        verbose_name="Data do follow-up",
+        help_text="Data prevista para o próximo contato",
+    )
     criado_em = models.DateTimeField(auto_now_add=True, verbose_name="Criado em")
     atualizado_em = models.DateTimeField(auto_now=True, verbose_name="Atualizado em")
 

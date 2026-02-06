@@ -5,6 +5,16 @@
 {% block content %}
 <h2>Dashboard</h2>
 
+{% if followups_hoje > 0 %}
+<div class="alert alert-warning d-flex align-items-center mt-3" role="alert">
+    <i class="bi bi-bell-fill me-2 fs-4"></i>
+    <div>
+        <strong>Lembrete:</strong> Você possui <strong>{{ followups_hoje }}</strong> oportunidade{{ followups_hoje|pluralize }} com follow-up para hoje.
+        <a href="{% url 'sales:minhas_pendencias' %}" class="alert-link">Ver pendências</a>
+    </div>
+</div>
+{% endif %}
+
 <div class="row mt-4">
     <div class="col-md-4">
         <div class="card text-bg-primary mb-3">

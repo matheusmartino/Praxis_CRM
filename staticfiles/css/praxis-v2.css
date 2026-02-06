@@ -1,0 +1,642 @@
+/**
+ * Praxis CRM — Style v2 (CSS Incremental)
+ * =========================================================================
+ *
+ * Refatoração visual progressiva: minimalista, institucional, sem risco.
+ * Não altera HTML, JS ou CSS existente. Apenas sobreposição segura.
+ *
+ * Princípio: "Lapidar sem quebrar. Refinar sem chamar atenção."
+ *
+ * COMO ATIVAR — adicione em templates/base.html, APÓS a linha do style.css:
+ *
+ *   <link href="{% static 'css/praxis-v2.css' %}" rel="stylesheet">
+ *
+ * Para reverter: basta remover essa linha. Zero impacto.
+ * =========================================================================
+ */
+
+/* Importa as variáveis do projeto (cores, tipografia, espaçamento) */
+@import url('variables.css');
+
+
+/* =============================================================================
+   1. TIPOGRAFIA & BASE
+   Hierarquia mais clara, menos peso visual, leitura confortável.
+   ============================================================================= */
+
+body {
+    font-family: var(--praxis-font-family);
+    color: var(--praxis-texto-principal);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--praxis-azul-escuro);
+    font-weight: 600;
+}
+
+h2 {
+    font-size: 1.4rem;
+    letter-spacing: -0.01em;
+}
+
+h3 {
+    font-size: 1.2rem;
+}
+
+h4 {
+    font-size: 1.05rem;
+}
+
+h5 {
+    font-size: 0.95rem;
+}
+
+/*
+ * Headings dentro de containers com .text-white devem herdar a cor do pai.
+ * Isso garante que h5 dentro de .card-header.bg-info.text-white (ex: Dicas
+ * no followup_form) permaneça branco, enquanto h5 dentro de cards de métrica
+ * (cujo .text-white foi sobrescrito para escuro) fique escuro.
+ */
+.text-white h1, .text-white h2, .text-white h3,
+.text-white h4, .text-white h5, .text-white h6 {
+    color: inherit;
+}
+
+
+/* =============================================================================
+   2. NAVBAR — Institucional, discreto, com destaque ativo sutil
+   bg-dark (#212529) → azul escuro institucional (#2c3e50)
+   ============================================================================= */
+
+.navbar.navbar-dark.bg-dark {
+    background-color: var(--praxis-azul-escuro) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.navbar .navbar-brand {
+    font-weight: 600;
+    font-size: 1.05rem;
+    letter-spacing: 0.02em;
+}
+
+.navbar .nav-link {
+    font-size: 0.85rem;
+    opacity: 0.7;
+    transition: opacity 0.15s ease;
+}
+
+.navbar .nav-link:hover {
+    opacity: 1;
+}
+
+/* Ícones na navbar: discretos, nunca protagonistas */
+.navbar .nav-link .bi {
+    font-size: 0.8em;
+    margin-right: 2px;
+}
+
+.navbar .dropdown-menu {
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    padding: 0.35rem 0;
+}
+
+.navbar .dropdown-item {
+    font-size: 0.85rem;
+    padding: 0.45rem 1rem;
+}
+
+.navbar .dropdown-item:hover {
+    background-color: var(--praxis-fundo-cinza);
+}
+
+.navbar .dropdown-item .bi {
+    font-size: 0.85em;
+    margin-right: 4px;
+    opacity: 0.6;
+}
+
+
+/* =============================================================================
+   3. CARDS — Base geral
+   Bordas mais sutis, sombra mínima, cantos levemente arredondados.
+   ============================================================================= */
+
+.card {
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    border-radius: var(--praxis-border-radius-lg);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.card-header {
+    background-color: var(--praxis-fundo-cinza);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    font-size: 0.9rem;
+}
+
+.card-header h5 {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* Ícones em card-headers: discretos */
+.card-header .bi {
+    font-size: 0.85em;
+    opacity: 0.6;
+}
+
+/* Cards dentro de links (CTAs em home.html) — hover sutil */
+a > .card,
+a .card {
+    transition: box-shadow 0.15s ease;
+}
+
+a > .card:hover,
+a .card:hover {
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+/* =============================================================================
+   4. CARDS DE MÉTRICAS — Fundo branco + borda lateral colorida
+   Cores cheias eram o padrão Bootstrap. Agora: fundo branco, cor apenas
+   como acento lateral de 4px. Ícones marca d'água a 12% de opacidade.
+   Afeta: home.html, dashboard.html, minha_meta.html
+   ============================================================================= */
+
+/* --- PRIMARY — azul (#3498db) --- */
+.card.bg-primary,
+.card.text-bg-primary {
+    background-color: var(--praxis-fundo-branco) !important;
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    border-left: 4px solid var(--praxis-azul-principal) !important;
+    color: var(--praxis-texto-principal) !important;
+}
+
+/* --- SUCCESS — verde (#27ae60) --- */
+.card.bg-success,
+.card.text-bg-success {
+    background-color: var(--praxis-fundo-branco) !important;
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    border-left: 4px solid var(--praxis-verde) !important;
+    color: var(--praxis-texto-principal) !important;
+}
+
+/* --- INFO — ciano (#17a2b8) --- */
+.card.bg-info,
+.card.text-bg-info {
+    background-color: var(--praxis-fundo-branco) !important;
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    border-left: 4px solid #17a2b8 !important;
+    color: var(--praxis-texto-principal) !important;
+}
+
+/* --- WARNING — laranja (#f39c12) --- */
+.card.bg-warning {
+    background-color: var(--praxis-fundo-branco) !important;
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    border-left: 4px solid var(--praxis-laranja) !important;
+    color: var(--praxis-texto-principal) !important;
+}
+
+/* --- SECONDARY — cinza (#6c757d) --- */
+.card.bg-secondary {
+    background-color: var(--praxis-fundo-branco) !important;
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    border-left: 4px solid #6c757d !important;
+    color: var(--praxis-texto-principal) !important;
+}
+
+/* --- DARK — azul escuro (#2c3e50) --- */
+.card.bg-dark {
+    background-color: var(--praxis-fundo-branco) !important;
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    border-left: 4px solid var(--praxis-azul-escuro) !important;
+    color: var(--praxis-texto-principal) !important;
+}
+
+/* --- DANGER — vermelho (#e74c3c) --- */
+.card.bg-danger,
+.card.text-bg-danger {
+    background-color: var(--praxis-fundo-branco) !important;
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    border-left: 4px solid var(--praxis-vermelho) !important;
+    color: var(--praxis-texto-principal) !important;
+}
+
+/*
+ * Correção de .text-white / .text-dark em cards com fundo agora branco.
+ * Bootstrap coloca text-white para contraste em bg coloridos.
+ * Com fundo branco, o texto precisa ser escuro.
+ */
+.card.bg-primary.text-white,
+.card.bg-success.text-white,
+.card.bg-info.text-white,
+.card.bg-secondary.text-white,
+.card.bg-dark.text-white,
+.card.bg-danger.text-white,
+.card.bg-warning.text-dark {
+    color: var(--praxis-texto-principal) !important;
+}
+
+/*
+ * Títulos dos cards de métrica: label discreto, uppercase.
+ * Ex: "LEADS (PROVISÓRIOS)", "META", "PIPELINE"
+ */
+.card.bg-primary .card-title,
+.card.bg-success .card-title,
+.card.bg-info .card-title,
+.card.bg-warning .card-title,
+.card.bg-secondary .card-title,
+.card.bg-dark .card-title,
+.card.bg-danger .card-title,
+.card.text-bg-primary .card-title,
+.card.text-bg-success .card-title,
+.card.text-bg-info .card-title {
+    color: var(--praxis-texto-secundario) !important;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+}
+
+/*
+ * Valores numéricos nos cards de métrica (h2, h3).
+ * Ex: "R$ 45.000,00", "12", "R$ 120.000,00"
+ */
+.card.bg-primary h2, .card.bg-primary h3,
+.card.bg-success h2, .card.bg-success h3,
+.card.bg-info h2, .card.bg-info h3,
+.card.bg-warning h2, .card.bg-warning h3,
+.card.bg-secondary h2, .card.bg-secondary h3,
+.card.bg-dark h2, .card.bg-dark h3,
+.card.bg-danger h2, .card.bg-danger h3,
+.card.text-bg-primary h2, .card.text-bg-primary h3,
+.card.text-bg-success h2, .card.text-bg-success h3,
+.card.text-bg-info h2, .card.text-bg-info h3 {
+    color: var(--praxis-azul-escuro) !important;
+    font-weight: 700;
+}
+
+/*
+ * Display values em home.html (número grande de oportunidades).
+ */
+.card.text-bg-primary .display-4 {
+    color: var(--praxis-azul-escuro) !important;
+}
+
+/*
+ * Ícones de ação nos cards CTA (home.html: Novo cliente, Nova oportunidade).
+ * Cor da marca ao invés de branco, para contrastar no fundo branco.
+ */
+.card.text-bg-success .display-4,
+.card.text-bg-success .card-text .bi {
+    color: var(--praxis-verde) !important;
+}
+
+.card.text-bg-info .display-4,
+.card.text-bg-info .card-text .bi {
+    color: #17a2b8 !important;
+}
+
+/*
+ * Ícones marca d'água nos cards de métrica (dashboard, minha_meta).
+ * Eram brancos a 50% em fundo colorido.
+ * Agora: cor da marca a 12%, efeito sutil de watermark.
+ */
+.card.bg-primary .opacity-50,
+.card.text-bg-primary .opacity-50 {
+    color: var(--praxis-azul-principal) !important;
+    opacity: 0.12 !important;
+}
+
+.card.bg-success .opacity-50,
+.card.text-bg-success .opacity-50 {
+    color: var(--praxis-verde) !important;
+    opacity: 0.12 !important;
+}
+
+.card.bg-info .opacity-50,
+.card.text-bg-info .opacity-50 {
+    color: #17a2b8 !important;
+    opacity: 0.12 !important;
+}
+
+.card.bg-warning .opacity-50 {
+    color: var(--praxis-laranja) !important;
+    opacity: 0.12 !important;
+}
+
+.card.bg-secondary .opacity-50 {
+    color: #6c757d !important;
+    opacity: 0.12 !important;
+}
+
+.card.bg-dark .opacity-50 {
+    color: var(--praxis-azul-escuro) !important;
+    opacity: 0.12 !important;
+}
+
+.card.bg-danger .opacity-50 {
+    color: var(--praxis-vermelho) !important;
+    opacity: 0.12 !important;
+}
+
+
+/* =============================================================================
+   5. TABELAS — Limpas, zebra suave, headers institucionais
+   table-dark no thead → cinza claro com labels uppercase.
+   Bordas quase invisíveis. Zebra a 1.5% de opacidade.
+   ============================================================================= */
+
+.table {
+    font-size: 0.85rem;
+}
+
+/* Headers de tabela: labels discretos */
+.table > thead th {
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--praxis-texto-secundario);
+    padding: 0.7rem 0.75rem;
+    vertical-align: middle;
+}
+
+/*
+ * thead.table-dark → header cinza claro institucional.
+ * Bootstrap usa CSS custom properties para colorir, então
+ * basta sobrescrever as variáveis.
+ */
+thead.table-dark {
+    --bs-table-color: var(--praxis-texto-secundario);
+    --bs-table-bg: var(--praxis-fundo-cinza);
+    --bs-table-border-color: rgba(0, 0, 0, 0.06);
+}
+
+thead.table-dark th {
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+/* Zebra: quase imperceptível */
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+    --bs-table-bg-type: rgba(0, 0, 0, 0.015);
+}
+
+/* Hover: sutil */
+.table-hover > tbody > tr:hover > * {
+    --bs-table-bg-state: rgba(0, 0, 0, 0.03);
+}
+
+/* Células: padding confortável */
+.table > tbody > tr > td {
+    padding: 0.65rem 0.75rem;
+    vertical-align: middle;
+}
+
+/* Bordas entre linhas: quase invisíveis */
+.table > :not(caption) > * > * {
+    border-bottom-color: rgba(0, 0, 0, 0.05);
+}
+
+
+/* =============================================================================
+   6. BADGES — Mantém cor cheia (indicadores de status), mas refinados
+   Badges são os únicos elementos que permanecem com cor sólida.
+   "Cor cheia apenas para status (OK, Atenção, Risco)."
+   ============================================================================= */
+
+.badge {
+    font-weight: 500;
+    font-size: 0.73em;
+    padding: 0.35em 0.6em;
+    border-radius: 4px;
+    letter-spacing: 0.02em;
+}
+
+
+/* =============================================================================
+   7. FORMULÁRIOS — Discretos e precisos
+   Labels uppercase, foco azul suave, inputs com borda sutil.
+   Afeta: cliente_form, oportunidade_form, interacao_form, followup_form,
+   filtros em minha_meta, metas_por_vendedor, oportunidades_sem_followup.
+   ============================================================================= */
+
+.form-control,
+.form-select {
+    font-size: 0.875rem;
+    border-color: rgba(0, 0, 0, 0.15);
+    padding: 0.5rem 0.75rem;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--praxis-azul-principal);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.form-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--praxis-texto-secundario);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.3rem;
+}
+
+.form-text {
+    font-size: 0.78rem;
+    color: var(--praxis-texto-muted);
+}
+
+.invalid-feedback {
+    font-size: 0.78rem;
+}
+
+
+/* =============================================================================
+   8. BOTÕES — Alinhados à marca Praxis
+   ============================================================================= */
+
+.btn {
+    font-size: 0.85rem;
+    font-weight: 500;
+    border-radius: var(--praxis-border-radius);
+    letter-spacing: 0.01em;
+    transition: all 0.15s ease;
+}
+
+.btn-primary {
+    background-color: var(--praxis-azul-principal);
+    border-color: var(--praxis-azul-principal);
+}
+
+.btn-primary:hover {
+    background-color: var(--praxis-azul-hover);
+    border-color: var(--praxis-azul-hover);
+}
+
+.btn-outline-primary {
+    color: var(--praxis-azul-principal);
+    border-color: var(--praxis-azul-principal);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--praxis-azul-principal);
+    border-color: var(--praxis-azul-principal);
+    color: #fff;
+}
+
+
+/* =============================================================================
+   9. ALERTS — Borda lateral colorida, fundo suave
+   Remove a borda completa do Bootstrap. Mantém apenas borda esquerda
+   de 4px como acento de cor. Fundo em tom pastel.
+   ============================================================================= */
+
+.alert {
+    font-size: 0.85rem;
+    border-radius: var(--praxis-border-radius-lg);
+    border: none;
+    border-left: 4px solid transparent;
+}
+
+.alert-warning {
+    background-color: var(--praxis-laranja-fundo);
+    border-left-color: var(--praxis-laranja);
+}
+
+.alert-success {
+    background-color: var(--praxis-verde-fundo);
+    border-left-color: var(--praxis-verde);
+}
+
+.alert-info {
+    background-color: #e8f4f8;
+    border-left-color: #17a2b8;
+}
+
+.alert-danger {
+    background-color: #fdf0ef;
+    border-left-color: var(--praxis-vermelho);
+}
+
+
+/* =============================================================================
+   10. PROGRESS BAR — Refinado
+   ============================================================================= */
+
+.progress {
+    border-radius: var(--praxis-border-radius);
+    background-color: rgba(0, 0, 0, 0.04);
+}
+
+.progress-bar {
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+
+/* =============================================================================
+   11. LIST GROUP — Bordas sutis
+   Usado em: home.html (clientes recentes, oportunidades abertas),
+   cliente_detail.html (oportunidades do cliente),
+   oportunidade_detail.html (interações).
+   ============================================================================= */
+
+.list-group-item {
+    border-color: rgba(0, 0, 0, 0.06);
+    padding: 0.65rem 1rem;
+    font-size: 0.875rem;
+}
+
+
+/* =============================================================================
+   12. PAGINAÇÃO — Cores da marca
+   Usado em: cliente_list, oportunidade_list, interacao_list.
+   ============================================================================= */
+
+.pagination .page-link {
+    font-size: 0.85rem;
+    color: var(--praxis-azul-principal);
+    border-color: rgba(0, 0, 0, 0.08);
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--praxis-azul-principal);
+    border-color: var(--praxis-azul-principal);
+}
+
+
+/* =============================================================================
+   13. DEFINITION LISTS — Labels institucionais
+   Usado em: cliente_detail.html, oportunidade_detail.html
+   dt = label discreto (TIPO, CNPJ/CPF, ETAPA...)
+   dd = valor com leitura confortável
+   ============================================================================= */
+
+dl.row dt {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--praxis-texto-secundario);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+dl.row dd {
+    font-size: 0.875rem;
+    color: var(--praxis-texto-principal);
+}
+
+
+/* =============================================================================
+   14. LINKS — Cor da marca
+   ============================================================================= */
+
+a {
+    color: var(--praxis-azul-principal);
+    transition: color 0.15s ease;
+}
+
+a:hover {
+    color: var(--praxis-azul-hover);
+}
+
+
+/* =============================================================================
+   15. DROPDOWNS — Sombra suave
+   ============================================================================= */
+
+.dropdown-menu {
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    border-radius: 6px;
+}
+
+.dropdown-item {
+    font-size: 0.85rem;
+    padding: 0.45rem 1rem;
+}
+
+.dropdown-item:hover {
+    background-color: var(--praxis-fundo-cinza);
+}
+
+
+/* =============================================================================
+   16. ESPAÇAMENTO DO CONTAINER
+   ============================================================================= */
+
+.container {
+    padding-bottom: 2rem;
+}

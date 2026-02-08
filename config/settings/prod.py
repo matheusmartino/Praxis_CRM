@@ -10,19 +10,13 @@ ALLOWED_HOSTS = [
 
 
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": os.getenv("DB_NAME", "praxis"),
-#         "USER": os.getenv("DB_USER", "praxis"),
-#         "PASSWORD": os.getenv("DB_PASSWORD", ""),
-#         "HOST": os.getenv("DB_HOST", "localhost"),
-#         "PORT": os.getenv("DB_PORT", "5432"),
-#     }
-
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("DB_NAME", "praxiscrm"),
+        "USER": os.getenv("DB_USER", "praxiscrm"),
+        "PASSWORD": os.getenv("DB_PASSWORD", "Praxis@0611"),
+        "HOST": os.getenv("DB_HOST", "praxiscrm.postgresql.dbaas.com.br"),
+        "PORT": os.getenv("DB_PORT", "5432"),
     }
 }

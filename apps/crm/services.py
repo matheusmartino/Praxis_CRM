@@ -21,7 +21,7 @@ def criar_cliente(
     if hasattr(user, "perfil") and user.perfil.papel == PerfilUsuario.ADMIN:
         status = StatusCliente.ATIVO
 
-    return Cliente.objects.create(
+    cliente = Cliente(
         nome=nome,
         telefone=telefone,
         email=email,
@@ -33,6 +33,15 @@ def criar_cliente(
         telefone_contato=telefone_contato,
         email_contato=email_contato,
     )
+
+    try:
+        cliente.clean()
+    except ValidationError:
+        # Model rejeita ATIVO sem cnpj_cpf — rebaixa para PROVISORIO
+        cliente.status = StatusCliente.PROVISORIO
+
+    cliente.save()
+    return cliente
 
 
 def ativar_cliente(*, cliente, user):

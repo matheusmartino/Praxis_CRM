@@ -1,3 +1,5 @@
+from django.contrib import messages
+from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.utils import timezone
@@ -86,7 +88,10 @@ class OportunidadeAvancarView(VendedorWriteMixin, View):
             if oportunidade.vendedor != request.user:
                 from django.core.exceptions import PermissionDenied
                 raise PermissionDenied
-        avancar_etapa(oportunidade=oportunidade)
+        try:
+            avancar_etapa(oportunidade=oportunidade)
+        except ValidationError as e:
+            messages.error(request, e.message)
         return redirect("sales:oportunidade_detail", pk=pk)
 
 
@@ -99,7 +104,10 @@ class OportunidadePerdidaView(VendedorWriteMixin, View):
             if oportunidade.vendedor != request.user:
                 from django.core.exceptions import PermissionDenied
                 raise PermissionDenied
-        marcar_perdida(oportunidade=oportunidade)
+        try:
+            marcar_perdida(oportunidade=oportunidade)
+        except ValidationError as e:
+            messages.error(request, e.message)
         return redirect("sales:oportunidade_detail", pk=pk)
 
 

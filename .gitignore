@@ -7,8 +7,8 @@ __pycache__/
 venv/
 
 # Django
-db.sqlite3
-staticfiles/
+*.sqlite3
+#staticfiles/
 *.log
 
 # IDE
